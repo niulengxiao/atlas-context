@@ -33,4 +33,6 @@ Review every changed file for private content. Add any intentional public source
 
 The guard detects selected file types, common credential/path patterns and historical source files when Git is present. A passing result is not proof that prose or screenshots contain no private information. Inspect the final diff and exact archive contents too.
 
+The only media exception is an exact `PUBLIC_MEDIA` hash for a manually reviewed synthetic asset under `docs/assets/`. Review both visible content and metadata before adding or updating a digest. PNG text and EXIF metadata are rejected even with a matching hash. Do not use this exception for real screenshots, media libraries or logs. MCP tests require Python 3.11+ and `pip install '.[mcp]'`; core checks remain dependency-free on Python 3.10+.
+
 Changes are contributed under the repository's MIT license. Keep the README and roadmap clear about which features run today and which are proposed.

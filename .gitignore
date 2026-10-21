@@ -1,4 +1,5 @@
 __pycache__/
+.DS_Store
 *.pyc
 .venv/
 *.sqlite*
@@ -17,3 +18,9 @@ scenario-results.json
 .env*
 workspace/
 runtime/
+
+# Exact synthetic showcase assets; also checked against PUBLIC_MEDIA hashes.
+!docs/assets/atlas-timeline.png
+!docs/assets/atlas-editor.png
+!docs/assets/atlas-privacy.png
+!docs/assets/atlas-app-walkthrough.mp4

@@ -2,11 +2,25 @@
 
 **Give AI agents the personal context you choose to share, in wording you have reviewed.**
 
-[Chinese translation](README.zh-CN.md) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [MIT license](LICENSE)
+[![Synthetic checks](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml/badge.svg)](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml)
+
+[Chinese translation](README.zh-CN.md) · [Demo](docs/demo.md) · [MCP setup](docs/mcp.md) · [Roadmap](ROADMAP.md) · [MIT license](LICENSE)
 
 Atlas Context turns selected life records into bounded, traceable context for tasks such as writing a short biography or a yearly reflection. You choose the records, review the exact outgoing text and set a local approval period. The context preserves the difference between recorded material, your own statements and system inferences.
 
-**Status: experimental Python prototype.** Local import, approval, search and context preview run today. Native Atlas Memoir integration, MCP transport and model-generated answers are planned. The demo uses fictional records and makes no network or model calls.
+**Status: experimental alpha.** Local import, approval, search and a read-only MCP stdio server run today. The official SDK client verifies retrieval and revocation over a real subprocess connection. Native Atlas export integration and broad adoption are still pending. Synthetic checks make no model or external service calls; see the [validation scope](docs/evidence.md).
+
+## See the product background
+
+Atlas Memoir is the native timeline and correction product behind this exploration. These are actual app views rendered in an isolated build with entirely fictional records. The native sharing screen is a separate feature from Agent approval; an app-to-context export bridge is still planned.
+
+<p>
+  <img src="docs/assets/atlas-timeline.png" width="240" alt="Synthetic Atlas Memoir timeline" />
+  <img src="docs/assets/atlas-editor.png" width="240" alt="Fictional life stages with user and suggested attribution" />
+  <img src="docs/assets/atlas-privacy.png" width="240" alt="Native sharing review using synthetic records" />
+</p>
+
+[18-second screenshot walkthrough](docs/assets/atlas-app-walkthrough.mp4) · [App showcase and provenance](docs/app-showcase.md)
 
 ## Why this project
 
@@ -16,7 +30,31 @@ Atlas Context explores that boundary. Its first task is small: prepare a few rev
 
 ## Try it with fictional records
 
-Requires **Python 3.10+**. Uses the standard library only; no install step or API key is required. Run from this repository's root:
+The core needs **Python 3.10+** and the standard library only. The optional MCP integration needs **Python 3.11+**. No API key is needed for either synthetic demo. Run from the repository root:
+
+```sh
+python3 -m atlas_context.synthetic --output ../atlas-story-demo
+python3 -m atlas_context.cli preview \
+  --draft ../atlas-story-demo/private-draft.json \
+  --grant ../atlas-story-demo/private-grant.json \
+  --purpose write_short_bio --audience synthetic_agent --query photography
+```
+
+This generates a fictional three-year story: **16 drafts, 14 explicitly selected records, 13 default outgoing records and 8 query scenarios**. Photography returns seven records. Unselected entries, hidden entries, raw OCR and an unsupported employer query return no evidence; an inferred trip stays labeled as inference. The approval is scripted only because the input and reviewed wording are known fictional fixtures. Real imports still require an explicit local review.
+
+To verify the actual MCP stdio connection, create an environment outside the checkout using Python 3.11+, then run:
+
+```sh
+python3 -m venv ../atlas-env
+../atlas-env/bin/python -m pip install '.[mcp]'
+../atlas-env/bin/python -m atlas_context.mcp_demo --output ../atlas-mcp-demo
+```
+
+The MCP demo checks **16 conditions**, including a narrow tool schema, approved-only retrieval, strict argument types, source revision changes, expiry, purpose/audience mismatch and revocation on the same live connection. It intentionally leaves its demo grant revoked. Generated files remain outside this repository. See [demo details](docs/demo.md) and [host configuration](docs/mcp.md).
+
+Three actual Codex client examples are documented separately: [a cited introduction, insufficient employer evidence and a revoked grant](docs/agent-demo.md). They use fictional inputs and were manually inspected; they are not a general model-quality benchmark.
+
+The original four-record minimal example also remains available:
 
 ```sh
 python3 demo.py --output ../atlas-synthetic-runtime
@@ -76,7 +114,7 @@ Selected media rows ──────┘                           │
 - **Local Media Library** organizes media and notes. This prototype reads explicitly selected catalog rows in read-only mode.
 - **Atlas Memoir** is the intended timeline and correction interface. The current adapter accepts a supplied summary-shaped projection; its native selective exporter is still planned. Full backup envelopes are rejected.
 - **Atlas Context** contains the reusable review and retrieval core in this repository.
-- **Agent integration** will consume approved context through a proposed read-only MCP tool. No MCP server is implemented here yet.
+- **Agent integration** can consume approved context using the read-only `search_life_context` MCP stdio tool. Its grant, files, purpose and audience are bound by trusted local configuration, outside model arguments.
 
 ## Implemented boundaries
 
@@ -101,7 +139,7 @@ Optional outgoing fields are a year or month, a city and a reviewed evidence lab
 - Sending context to a cloud model sends that text off the device. Revocation blocks future reads from this layer; it cannot recall copies already received by a client or model.
 - Encryption at rest, multi-user isolation, large-library performance and actual agent answer quality have not been validated.
 
-See the [MCP boundary plan](MCP_PLAN.md) for the proposed interface and the [roadmap](ROADMAP.md) for the next milestones.
+See [MCP setup and boundaries](docs/mcp.md), the [evidence checklist](docs/evidence.md) and the [roadmap](ROADMAP.md) for the next milestones.
 
 ## Development
 
@@ -111,21 +149,25 @@ python3 scripts/check_release.py
 python3 -m atlas_context.cli --help
 ```
 
-The 17 synthetic tests cover approval rules, attribution, private-field exclusion, revision changes, expiry, revocation, citations and read-only adapters. The release guard checks the public file allowlist, common credential/path patterns and Git history when present. It supports manual review; it cannot recognize every form of private content.
+The suite covers approval rules, private-field exclusion, revision changes, expiry, revocation, read-only adapters, the real MCP subprocess transport and publication history. MCP-specific tests skip when the optional extra is absent. [GitHub Actions](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml) runs core checks on Python 3.10/3.12 and MCP checks on Python 3.11/3.12. The release guard checks the public file allowlist, reviewed-media hashes, common credential/path patterns and Git history. It supports manual review; it cannot recognize every form of private content.
 
 ```text
 atlas_context/
   core.py             # Records, local approval, retrieval, local evidence lookup
   importers.py        # Summary projection and selected media catalog adapters
   cli.py              # Local import, approval and context preview commands
+  synthetic.py        # Fictional three-year fixture generator
+  mcp_server.py       # One read-only stdio tool, with host-bound configuration
+  mcp_demo.py         # Real SDK client/server roundtrip and invalidation checks
 demo.py               # Generates fictional records and checks four scenarios
 tests/test_context.py # Synthetic behavior tests
 scripts/check_release.py
 PUBLIC_FILES          # Explicit source-release allowlist
+PUBLIC_MEDIA          # Exact hashes of manually reviewed synthetic showcase assets
 ```
 
 ## Public code, private records
 
-This repository contains code, documentation and synthetic fixture generators. Keep real photos, videos, catalogs, OCR, notes, drafts, grants, context exports, access logs, credentials and real-data screenshots outside the repository. `.gitignore` is a convenience, not a privacy boundary; ignored files can still be force-added or included in an archive.
+This repository contains code, documentation, synthetic fixture generators and four explicitly reviewed synthetic showcase assets. Keep real photos, videos, catalogs, OCR, notes, drafts, grants, context exports, access logs, credentials and real-data screenshots outside it. All other media files are rejected. `.gitignore` is a convenience, not a privacy boundary; ignored files can still be force-added or included in an archive.
 
 Contributions should reproduce issues with synthetic records. See [CONTRIBUTING.md](CONTRIBUTING.md). Code is released under the [MIT license](LICENSE); personal runtime records are not part of the source release.

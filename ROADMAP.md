@@ -9,8 +9,10 @@ The first complete user journey is: select a small set of life records, review t
 - [x] Exact-wording local approval with purpose, audience and expiry.
 - [x] Retrieval over approved projections only; inference excluded by default.
 - [x] Draft revision checks, local revocation and opaque citations.
-- [x] Synthetic demo, 17 unit tests and public-source release guard.
+- [x] Minimal and three-year fictional demos, 33 tests and public-source/history guard.
 - [x] English and Chinese documentation.
+- [x] Native product screenshots and walkthrough from an isolated fictional harness.
+- [x] Pinned core and MCP GitHub Actions workflows.
 
 ## Next: a usable local review flow
 
@@ -23,19 +25,21 @@ The first complete user journey is: select a small set of life records, review t
 
 Acceptance: a user can select one fictional stage, correct it, inspect all outgoing text and approve it without editing JSON. Changing its source removes it from retrieval until re-reviewed.
 
-## Then: one read-only MCP tool
+## Available: one read-only MCP tool
 
-- [ ] Implement the official SDK transport described in [MCP_PLAN.md](MCP_PLAN.md).
-- [ ] Bind the grant and client policy in trusted configuration; do not let a model choose filesystem paths or its own audience.
-- [ ] Re-check expiry, revocation and current draft revisions on each call.
+- [x] Implement official SDK 2.3.0 stdio transport; verify current and legacy SDK clients.
+- [x] Bind the grant and client policy in trusted configuration; do not let a model choose filesystem paths or its own audience.
+- [x] Re-check expiry, revocation and current draft revisions on each call.
 - [ ] Exercise the actual client/host trust boundary, including adversarial retrieved text.
-- [ ] Keep approval, source resolution and original media access outside the tool interface.
+- [x] Keep approval, source resolution and original media access outside the tool interface.
 
-Acceptance: a real client retrieves only approved context, labels inference accurately and cannot read after revocation or expiry. No claim of MCP support before this runs end to end.
+Verified with the official SDK over a real subprocess connection. Actual model-host tests have a smaller documented scope; see [evidence](docs/evidence.md). Client labels are still local policy labels, not multi-user authentication.
 
 ## Then: evaluate one writing task
 
-- [ ] Use fictional life histories with supported, uncertain and unavailable details.
+- [x] Use fictional life histories with supported, uncertain and unavailable details.
+- [x] Try a real Codex client on a cited introduction using fictional approved context.
+- [x] Observe actual host responses to an unsupported employer query and a revoked grant.
 - [ ] Check whether generated introductions cite the right records and avoid inventing missing events.
 - [ ] Measure corrections and the time needed to prepare useful context.
 - [ ] After the synthetic path works, offer a user-controlled local trial with a small, explicitly selected real subset.

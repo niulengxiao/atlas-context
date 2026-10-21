@@ -1,0 +1,6 @@
+# Manually reviewed synthetic app screenshots and their screenshot walkthrough.
+# Exact hashes; see docs/app-showcase.md for provenance and scope.
+df474e2dc218b71ff7d07c5b96bec1e5cfc9fc03498cde24e7250f1d7a210d60  docs/assets/atlas-app-walkthrough.mp4
+d0b1a9f676c85c7b92fa48635ee32f5932ad3d196c45d0ca3ef9f9d0cc55ed41  docs/assets/atlas-editor.png
+3ec451259e46d8c109dd15750524e5eed8bd5b5330bcfc5cce63fc97409555bd  docs/assets/atlas-privacy.png
+529931b7439e89dd065fafd913ecc84e2801120d735bc58b216906801dc37b0d  docs/assets/atlas-timeline.png

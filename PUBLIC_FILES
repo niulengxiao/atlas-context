@@ -1,9 +1,12 @@
-# Public source only. Never add private runtime files.
+# Public source and explicitly reviewed synthetic showcase assets only.
+.github/workflows/ci.yml
 .gitignore
+CHANGELOG.md
 CONTRIBUTING.md
 LICENSE
 MCP_PLAN.md
 PUBLIC_FILES
+PUBLIC_MEDIA
 README.md
 README.zh-CN.md
 ROADMAP.md
@@ -11,6 +14,21 @@ atlas_context/__init__.py
 atlas_context/cli.py
 atlas_context/core.py
 atlas_context/importers.py
+atlas_context/mcp_demo.py
+atlas_context/mcp_server.py
+atlas_context/synthetic.py
 demo.py
+docs/agent-demo.md
+docs/app-showcase.md
+docs/assets/atlas-app-walkthrough.mp4
+docs/assets/atlas-editor.png
+docs/assets/atlas-privacy.png
+docs/assets/atlas-timeline.png
+docs/demo.md
+docs/evidence.md
+docs/mcp.md
+pyproject.toml
 scripts/check_release.py
 tests/test_context.py
+tests/test_mcp.py
+tests/test_release_guard.py

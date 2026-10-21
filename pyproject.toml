@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "atlas-context"
+version = "0.2.0a1"
+description = "User-reviewed personal context with bounded local disclosure"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+
+[project.optional-dependencies]
+mcp = ["mcp==2.3.0"]
+
+[project.scripts]
+atlas-context = "atlas_context.cli:main"
+atlas-context-mcp = "atlas_context.mcp_server:main"
+
+[project.urls]
+Repository = "https://github.com/niulengxiao/atlas-context"
+
+[tool.hatch.build.targets.wheel]
+packages = ["atlas_context"]
