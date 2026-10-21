@@ -1,0 +1,16 @@
+# Public source only. Never add private runtime files.
+.gitignore
+CONTRIBUTING.md
+LICENSE
+MCP_PLAN.md
+PUBLIC_FILES
+README.md
+README.zh-CN.md
+ROADMAP.md
+atlas_context/__init__.py
+atlas_context/cli.py
+atlas_context/core.py
+atlas_context/importers.py
+demo.py
+scripts/check_release.py
+tests/test_context.py
