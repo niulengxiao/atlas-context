@@ -2,7 +2,7 @@
 
 **Give AI agents the personal context you choose to share, in wording you have reviewed.**
 
-[简体中文](README.zh-CN.md) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [MIT license](LICENSE)
+[Chinese translation](README.zh-CN.md) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [MIT license](LICENSE)
 
 Atlas Context turns selected life records into bounded, traceable context for tasks such as writing a short biography or a yearly reflection. You choose the records, review the exact outgoing text and set a local approval period. The context preserves the difference between recorded material, your own statements and system inferences.
 
@@ -25,7 +25,7 @@ python3 -m atlas_context.cli preview \
   --grant ../atlas-synthetic-runtime/private-grant.json \
   --purpose write_short_bio \
   --audience synthetic_agent \
-  --query 摄影
+  --query photography
 ```
 
 Choose an empty output directory. The demo never replaces existing files. Its sample grant expires after one hour; use a new empty directory to generate another demo.
@@ -34,7 +34,7 @@ The demo creates four private draft records and approves three. Default retrieva
 
 | Query | Expected result |
 |---|---|
-| Photography experience (`摄影`) | Two reviewed records |
+| Photography experience (`photography`) | Two reviewed records |
 | Unapproved OCR detail | No authorized evidence |
 | Inferred trip, default search | No authorized evidence |
 | Inferred trip, explicitly included | One record, still labeled `inferred` |
@@ -49,8 +49,8 @@ One returned item looks like this; its opaque citation changes between demo runs
   "attribution": "user_statement",
   "wording": "user_reviewed",
   "source": "atlas_memoir",
-  "text": "2025 年，我开始学习摄影。",
-  "evidence_label": "本人补充的阶段说明（合成）",
+  "text": "In 2025, I started learning photography.",
+  "evidence_label": "User-written stage summary (synthetic)",
   "period": "2025"
 }
 ```

@@ -17,35 +17,35 @@ def run(destination):
     if any(dest.iterdir()):
         raise ValueError("Choose an empty demo directory; existing files are never replaced")
     now = datetime.now(timezone.utc)
-    summary = {"cityVisits": [{"cityId": "fictional-city", "cityName": "示例城"}], "lifeStages": [
-        {"id": "fictional-stage-learning", "title": "学习摄影", "cityId": "fictional-city", "startDate": "2025-06-01T00:00:00Z",
-         "source": "manual", "narrative": "开始学习摄影。这是合成样例。", "hiddenInShare": False},
-        {"id": "fictional-stage-guess", "title": "可能的短途旅行", "startDate": "2025-08-01T00:00:00Z", "source": "inferred", "hiddenInShare": False},
-        {"id": "fictional-stage-private", "title": "不分享的虚构经历", "source": "manual", "narrative": "UNAPPROVED_FIXTURE_DETAIL", "hiddenInShare": True},
+    summary = {"cityVisits": [{"cityId": "fictional-city", "cityName": "Example City"}], "lifeStages": [
+        {"id": "fictional-stage-learning", "title": "Learning photography", "cityId": "fictional-city", "startDate": "2025-06-01T00:00:00Z",
+         "source": "manual", "narrative": "Started learning photography. This is a synthetic example.", "hiddenInShare": False},
+        {"id": "fictional-stage-guess", "title": "Possible short trip", "startDate": "2025-08-01T00:00:00Z", "source": "inferred", "hiddenInShare": False},
+        {"id": "fictional-stage-private", "title": "Unshared fictional experience", "source": "manual", "narrative": "UNAPPROVED_FIXTURE_DETAIL", "hiddenInShare": True},
     ]}
     catalog = dest / "synthetic-catalog.sqlite"
     db = sqlite3.connect(catalog)
     db.executescript("CREATE TABLE assets(id TEXT,path TEXT,name TEXT,capture_date TEXT,capture_confirmed INTEGER,ocr_text TEXT,active INTEGER);"
                      "CREATE TABLE notes(id TEXT,title TEXT,note TEXT);")
     db.execute("INSERT INTO assets VALUES (?,?,?,?,?,?,?)", ("fictional-media-1", "SYNTHETIC_PRIVATE_LOCATOR", "generated-sample.png", "2025-06-01", 1, "UNAPPROVED_OCR_DETAIL", 1))
-    db.execute("INSERT INTO notes VALUES (?,?,?)", ("fictional-media-1", "课程笔记", "合成的学习资料记录"))
+    db.execute("INSERT INTO notes VALUES (?,?,?)", ("fictional-media-1", "Course notes", "Synthetic study-material record"))
     db.commit()
     db.close()
     before = hashlib.sha256(catalog.read_bytes()).hexdigest()
     records = from_atlas_summary(summary) + from_media_catalog(catalog, ["fictional-media-1"])
     selections = [
-        {"record_id": records[0]["id"], "revision": records[0]["revision"], "text": "2025 年，我开始学习摄影。", "period": "2025", "evidence_label": "本人补充的阶段说明（合成）"},
-        {"record_id": records[1]["id"], "revision": records[1]["revision"], "text": "2025 年可能有一次短途旅行，尚未确认。", "period": "2025", "evidence_label": "系统建议（合成）"},
-        {"record_id": records[3]["id"], "revision": records[3]["revision"], "text": "资料目录中有一份摄影学习笔记的记录。", "period": "2025", "evidence_label": "影像目录记录（合成）"},
+        {"record_id": records[0]["id"], "revision": records[0]["revision"], "text": "In 2025, I started learning photography.", "period": "2025", "evidence_label": "User-written stage summary (synthetic)"},
+        {"record_id": records[1]["id"], "revision": records[1]["revision"], "text": "There may have been a short trip in 2025; this is unconfirmed.", "period": "2025", "evidence_label": "System suggestion (synthetic)"},
+        {"record_id": records[3]["id"], "revision": records[3]["revision"], "text": "The media catalog contains a record of photography study notes.", "period": "2025", "evidence_label": "Media catalog record (synthetic)"},
     ]
     grant = approve_local(records, selections, purpose="write_short_bio", audience="synthetic_agent", expires_at=(now + timedelta(hours=1)).isoformat(), now=now)
     args = {"purpose": "write_short_bio", "audience": "synthetic_agent", "now": now}
     exported = query_context(records, grant, **args)
     results = [
-        {"case": "检索摄影经历", "result": query_context(records, grant, query="摄影", **args)},
-        {"case": "检索未授权 OCR", "result": query_context(records, grant, query="UNAPPROVED_OCR_DETAIL", **args)},
-        {"case": "默认不返回推测旅行", "result": query_context(records, grant, query="旅行", **args)},
-        {"case": "显式包含推测旅行", "result": query_context(records, grant, query="旅行", include_inferred=True, **args)},
+        {"case": "Search photography experience", "result": query_context(records, grant, query="photography", **args)},
+        {"case": "Search unapproved OCR", "result": query_context(records, grant, query="UNAPPROVED_OCR_DETAIL", **args)},
+        {"case": "Exclude inferred trip by default", "result": query_context(records, grant, query="trip", **args)},
+        {"case": "Explicitly include inferred trip", "result": query_context(records, grant, query="trip", include_inferred=True, **args)},
     ]
     for value in ("SYNTHETIC_PRIVATE_LOCATOR", "UNAPPROVED_OCR_DETAIL", "UNAPPROVED_FIXTURE_DETAIL", "fictional-stage-learning"):
         assert value not in json.dumps(exported, ensure_ascii=False)

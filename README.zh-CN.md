@@ -25,7 +25,7 @@ python3 -m atlas_context.cli preview \
   --grant ../atlas-synthetic-runtime/private-grant.json \
   --purpose write_short_bio \
   --audience synthetic_agent \
-  --query 摄影
+  --query photography
 ```
 
 输出目录必须为空，已有文件不会被覆盖。演示批准有效期为一小时；需要重跑时，换一个新的空目录。
@@ -34,7 +34,7 @@ python3 -m atlas_context.cli preview \
 
 | 查询 | 预期结果 |
 |---|---|
-| 摄影经历 | 两条审核过的记录 |
+| 摄影经历（`photography`） | 两条审核过的记录 |
 | 未批准的 OCR 内容 | 无已授权依据 |
 | 默认查询推测的旅行 | 无已授权依据 |
 | 显式包含旅行推测 | 一条记录，仍标记为 `inferred` |
@@ -49,8 +49,8 @@ python3 -m atlas_context.cli preview \
   "attribution": "user_statement",
   "wording": "user_reviewed",
   "source": "atlas_memoir",
-  "text": "2025 年，我开始学习摄影。",
-  "evidence_label": "本人补充的阶段说明（合成）",
+  "text": "In 2025, I started learning photography.",
+  "evidence_label": "User-written stage summary (synthetic)",
   "period": "2025"
 }
 ```
