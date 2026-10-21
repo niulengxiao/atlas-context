@@ -1,5 +1,7 @@
 # Local MCP setup
 
+For a phone export, start with [Phone to Agent](phone-handoff.md). Its generated `session/private-server.json` uses the same server configuration below. Default phone sessions are local-only; a cloud host requires explicit phone and desktop opt-in for the reviewed text. Read [PRIVACY.md](../PRIVACY.md) before connecting personal data.
+
 Atlas Context exposes one read-only tool over **stdio**, implemented with the official Python SDK, pinned to `mcp==2.3.0`. MCP support requires Python 3.11+; the core and fixture generator still support Python 3.10.
 
 ```sh

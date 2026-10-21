@@ -9,21 +9,24 @@ The first complete user journey is: select a small set of life records, review t
 - [x] Exact-wording local approval with purpose, audience and expiry.
 - [x] Retrieval over approved projections only; inference excluded by default.
 - [x] Draft revision checks, local revocation and opaque citations.
-- [x] Minimal and three-year fictional demos, 33 tests and public-source/history guard.
+- [x] Minimal, three-year and phone-handoff fictional demos, with public-source/history guard.
 - [x] English and Chinese documentation.
 - [x] Native product screenshots and walkthrough from an isolated fictional harness.
 - [x] Pinned core and MCP GitHub Actions workflows.
 
-## Next: a usable local review flow
+## Available: selective phone review and file handoff
 
-- [ ] Define and version a selective Atlas export contract, separate from full backup and social sharing.
-- [ ] Add a native export entry point using fictional data first.
-- [ ] Provide a local review screen for exact text, source attribution and optional metadata.
-- [ ] Display purpose, recipient and expiry before approval.
+- [x] Define and version a selective phone export contract, separate from full backup and social sharing.
+- [x] Add a reusable native review/export component and standalone fictional companion app.
+- [x] Provide exact text review, source attribution and optional coarse metadata; no selection by default.
+- [x] Display purpose, disclosure mode and expiry before export, with cloud access off by default.
+- [x] Require exact-file desktop review, bind a private session and generate summary instructions.
+- [x] Provide a desktop revocation command and check existing-connection denial.
+- [ ] Integrate the component in production Atlas Memoir and verify physical-device transfer.
 - [ ] Refresh drafts when connected sources change; require re-review of affected records.
-- [ ] Support correction and revocation through the local interface.
+- [ ] Support correction and revocation through a persistent native connection interface.
 
-Acceptance: a user can select one fictional stage, correct it, inspect all outgoing text and approve it without editing JSON. Changing its source removes it from retrieval until re-reviewed.
+The standalone component lets a user select and edit fictional text, inspect the complete JSON and export without hand-editing JSON. Desktop connection is explicit. Original phone changes do not refresh old exports; revoke and re-export. Automatic refresh and production app integration remain pending. See [phone handoff](docs/phone-handoff.md).
 
 ## Available: one read-only MCP tool
 

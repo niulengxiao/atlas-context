@@ -6,6 +6,11 @@ __pycache__/
 *.db
 private-*.json
 approved-context.json
+atlas-context-export.json
+*.atlas-context.json
+DerivedData/
+*.xcuserstate
+xcuserdata/
 scenario-results.json
 *.csv
 *.log
@@ -23,4 +28,5 @@ runtime/
 !docs/assets/atlas-timeline.png
 !docs/assets/atlas-editor.png
 !docs/assets/atlas-privacy.png
+!docs/assets/atlas-phone-review.png
 !docs/assets/atlas-app-walkthrough.mp4

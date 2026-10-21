@@ -30,3 +30,14 @@ The same configured Codex client was also exercised in two new sessions. Each ma
 | revoked | Atlas Context’s “photography” search is unavailable because a current matching local approval and valid draft are required. |
 
 The employer query returned an empty approved evidence set. Before the revoked case, the trusted local test changed the synthetic grant to inactive; the tool returned an error and the model disclosed no life details. Same-connection invalidation is covered separately by the automated SDK test. These three manually inspected cases are examples, not a statistical model evaluation.
+
+
+## Phone handoff follow-up
+
+A subsequent configured Codex client check used the versioned phone-file connector, with four newly generated fictional records and explicit cloud opt-in on both sides. One `search_life_context` call with an empty query returned three user statements. The answer cited all three and omitted the inferred trip. Its timeline was:
+
+- 2023: the user says they began learning photography in fictional Harbor City.
+- 2024: the user says they helped at a fictional community garden.
+- 2025: the user says they put together a small photography portfolio.
+
+The model stated that these selected, reviewed statements provide neither independent corroboration nor a complete account of intervening events. Citation IDs were checked against all three actual tool items. Raw client logs and local configuration paths remain private. This was a small fictional cloud-host test, not a real personal-data trial or a verified local-model deployment. See [phone setup](phone-handoff.md) and [privacy boundaries](../PRIVACY.md).

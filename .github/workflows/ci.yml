@@ -27,6 +27,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: python -m unittest discover -s tests -v
       - run: python -m atlas_context.synthetic --output "$RUNNER_TEMP/atlas-demo"
+      - run: python -m atlas_context.phone demo --output "$RUNNER_TEMP/atlas-phone-demo"
       - run: python scripts/check_release.py
       - name: Default README stays English
         run: python -c "import pathlib,re; assert not re.search(r'[\u3400-\u4dbf\u4e00-\u9fff]',pathlib.Path('README.md').read_text())"
@@ -45,4 +46,20 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: python -m pip install '.[mcp]'
       - run: python -m unittest discover -s tests -v
+      - run: python scripts/check_release.py
+
+  phone:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - run: xcrun swiftc mobile/PhoneBundle.swift tests/phone_contract_check.swift -o "$RUNNER_TEMP/phone-contract-check"
+      - run: '"$RUNNER_TEMP/phone-contract-check" "$RUNNER_TEMP/private-swift-phone.json"'
+      - run: python -c "import sys; from atlas_context.phone import load_bundle; b,_=load_bundle(sys.argv[1]); assert len(b['records'])==2 and b['disclosure']=='local_only'" "$RUNNER_TEMP/private-swift-phone.json"
+      - run: python scripts/create_phone_project.py --output "$RUNNER_TEMP/atlas-phone-app"
+      - run: xcodebuild -quiet -project "$RUNNER_TEMP/atlas-phone-app/AtlasPhoneDemo.xcodeproj" -scheme AtlasPhoneDemo -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath "$RUNNER_TEMP/atlas-phone-build" CODE_SIGNING_ALLOWED=NO build
       - run: python scripts/check_release.py

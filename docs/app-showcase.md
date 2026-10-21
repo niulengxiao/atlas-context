@@ -29,3 +29,8 @@ PNG EXIF and text metadata were removed without changing their pixel data. The s
 ## Integration status
 
 The Python summary adapter and MCP server run independently today. The native selective exporter and native Agent approval UI are still planned. These views show the project's existing product background; they do not establish external adoption, App Store availability or an already connected native Agent feature.
+
+
+## New phone review companion
+
+`atlas-phone-review.png` shows the separate open-source SwiftUI phone review/export component in an isolated simulator, using four newly generated fictional candidate records. No record is selected and optional period/city fields are off. The app requests no Photos permission. The screenshot was visually reviewed and its EXIF removed without changing compressed pixel data; its exact hash is listed in `PUBLIC_MEDIA`. This image does not show production Atlas Memoir integration. See [phone handoff](phone-handoff.md).

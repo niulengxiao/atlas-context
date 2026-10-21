@@ -1,10 +1,12 @@
 # Public source and explicitly reviewed synthetic showcase assets only.
 .github/workflows/ci.yml
 .gitignore
+AGENTS.md
 CHANGELOG.md
 CONTRIBUTING.md
 LICENSE
 MCP_PLAN.md
+PRIVACY.md
 PUBLIC_FILES
 PUBLIC_MEDIA
 README.md
@@ -16,6 +18,7 @@ atlas_context/core.py
 atlas_context/importers.py
 atlas_context/mcp_demo.py
 atlas_context/mcp_server.py
+atlas_context/phone.py
 atlas_context/synthetic.py
 demo.py
 docs/agent-demo.md
@@ -23,12 +26,21 @@ docs/app-showcase.md
 docs/assets/atlas-app-walkthrough.mp4
 docs/assets/atlas-editor.png
 docs/assets/atlas-privacy.png
+docs/assets/atlas-phone-review.png
 docs/assets/atlas-timeline.png
 docs/demo.md
 docs/evidence.md
 docs/mcp.md
+docs/phone-handoff.md
+mobile/AtlasContextExportView.swift
+mobile/AtlasPhoneDemoApp.swift
+mobile/PhoneBundle.swift
 pyproject.toml
 scripts/check_release.py
+scripts/create_phone_project.py
+tests/phone_contract_check.swift
+tests/PhoneReviewUITests.swift
 tests/test_context.py
 tests/test_mcp.py
+tests/test_phone.py
 tests/test_release_guard.py

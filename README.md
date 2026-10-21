@@ -1,18 +1,32 @@
 # Atlas Context
 
-**Give AI agents the personal context you choose to share, in wording you have reviewed.**
+**Turn selected phone memories into cited Agent summaries, with a review before sharing.**
 
 [![Synthetic checks](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml/badge.svg)](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml)
 
-[Chinese translation](README.zh-CN.md) · [Demo](docs/demo.md) · [MCP setup](docs/mcp.md) · [Roadmap](ROADMAP.md) · [MIT license](LICENSE)
+[Chinese translation](README.zh-CN.md) · [Phone to Agent](docs/phone-handoff.md) · [Privacy](PRIVACY.md) · [MCP setup](docs/mcp.md) · [Roadmap](ROADMAP.md) · [MIT license](LICENSE)
 
 Atlas Context turns selected life records into bounded, traceable context for tasks such as writing a short biography or a yearly reflection. You choose the records, review the exact outgoing text and set a local approval period. The context preserves the difference between recorded material, your own statements and system inferences.
 
-**Status: experimental alpha.** Local import, approval, search and a read-only MCP stdio server run today. The official SDK client verifies retrieval and revocation over a real subprocess connection. Native Atlas export integration and broad adoption are still pending. Synthetic checks make no model or external service calls; see the [validation scope](docs/evidence.md).
+**Status: experimental alpha.** A reusable iOS review/export component, a fictional companion app, a strict phone-file connector and a read-only MCP stdio server are implemented. The intended flow is **select on phone → review exact wording → transfer JSON → connect → ask your Agent for a cited summary**. Automatic USB scanning, production Atlas Memoir integration and live phone synchronization are not implemented. See the [phone guide](docs/phone-handoff.md) and [validation scope](docs/evidence.md).
+
+> **Privacy first:** nothing is selected by default. The phone export contains reviewed text, not original photos, videos, GPS, photo IDs or a full backup. Cloud access defaults off. Using a cloud Agent sends approved text to its provider; revocation blocks future reads but cannot recall previous copies. Text can still contain identifying details. Read the [full privacy statement](PRIVACY.md).
+
+## Connect a fictional phone story in one command
+
+```sh
+python3 -m atlas_context.phone demo --output ../atlas-phone-demo
+```
+
+This creates a minimal fictional phone bundle, a private MCP session and a three-record cited evidence preview. It makes no model call. Bind `session/private-server.json` to your MCP host, then give the Agent `session/private-agent-task.md` for a short overview, timeline, citations and evidence limits. Use a local model for the default `local_only` session. For iPhone setup and real reviewed files, follow [Phone to Agent](docs/phone-handoff.md). Agents should read [AGENTS.md](AGENTS.md) first.
+
+<img src="docs/assets/atlas-phone-review.png" width="300" alt="iOS phone context review: privacy notice, no records selected and optional metadata off, using fictional records" />
+
+The new standalone iOS companion uses fictional records and requests no Photos permission. It provides the review/export component; it is not an installed Atlas Memoir production release.
 
 ## See the product background
 
-Atlas Memoir is the native timeline and correction product behind this exploration. These are actual app views rendered in an isolated build with entirely fictional records. The native sharing screen is a separate feature from Agent approval; an app-to-context export bridge is still planned.
+Atlas Memoir is the native timeline and correction product behind this exploration. These are actual app views rendered in an isolated build with entirely fictional records. The pictured sharing screen is a separate feature from Agent approval. The new [phone review/export component](docs/phone-handoff.md) is provided separately for integration; these older screenshots do not show it.
 
 <p>
   <img src="docs/assets/atlas-timeline.png" width="240" alt="Synthetic Atlas Memoir timeline" />
@@ -112,7 +126,7 @@ Selected media rows ──────┘                           │
 ```
 
 - **Local Media Library** organizes media and notes. This prototype reads explicitly selected catalog rows in read-only mode.
-- **Atlas Memoir** is the intended timeline and correction interface. The current adapter accepts a supplied summary-shaped projection; its native selective exporter is still planned. Full backup envelopes are rejected.
+- **Atlas Memoir** is the intended timeline and correction interface. Its summary adapter accepts a supplied projection. A reusable SwiftUI selective exporter and fictional companion app now provide a versioned phone handoff; production app integration remains pending. Full backup envelopes are rejected.
 - **Atlas Context** contains the reusable review and retrieval core in this repository.
 - **Agent integration** can consume approved context using the read-only `search_life_context` MCP stdio tool. Its grant, files, purpose and audience are bound by trusted local configuration, outside model arguments.
 
@@ -134,7 +148,7 @@ Optional outgoing fields are a year or month, a city and a reviewed evidence lab
 
 - Audience and purpose are **local policy labels**, not authenticated identities. Grant files are trusted local configuration, not signed credentials. A process with permission to edit them can change them.
 - Revision checks compare the supplied draft with its approved revision. This prototype does not watch the original app or media library for changes; a future integration must refresh drafts when sources change.
-- Atlas backup decoding, checksum validation, migrations and native export are outside this prototype. Media adapters are exercised with generated catalogs, not personal libraries.
+- Atlas full-backup decoding, migrations, production app integration and live source refresh are outside this prototype. The separate phone export is a minimal reviewed projection. Media adapters and phone handoff checks use fictional records, not personal libraries.
 - Citations support inspection; they do not prove that reviewed wording is supported by the source. Retrieved text is marked as untrusted evidence, which does not by itself establish prompt-injection resistance in a future model.
 - Sending context to a cloud model sends that text off the device. Revocation blocks future reads from this layer; it cannot recall copies already received by a client or model.
 - Encryption at rest, multi-user isolation, large-library performance and actual agent answer quality have not been validated.
@@ -159,6 +173,8 @@ atlas_context/
   synthetic.py        # Fictional three-year fixture generator
   mcp_server.py       # One read-only stdio tool, with host-bound configuration
   mcp_demo.py         # Real SDK client/server roundtrip and invalidation checks
+  phone.py            # Strict reviewed phone handoff, local session and revocation
+mobile/               # SwiftUI review/export component and fictional iPhone demo
 demo.py               # Generates fictional records and checks four scenarios
 tests/test_context.py # Synthetic behavior tests
 scripts/check_release.py
@@ -168,6 +184,6 @@ PUBLIC_MEDIA          # Exact hashes of manually reviewed synthetic showcase ass
 
 ## Public code, private records
 
-This repository contains code, documentation, synthetic fixture generators and four explicitly reviewed synthetic showcase assets. Keep real photos, videos, catalogs, OCR, notes, drafts, grants, context exports, access logs, credentials and real-data screenshots outside it. All other media files are rejected. `.gitignore` is a convenience, not a privacy boundary; ignored files can still be force-added or included in an archive.
+This repository contains code, documentation, synthetic fixture generators and five explicitly reviewed synthetic showcase assets. Keep real photos, videos, catalogs, OCR, notes, drafts, grants, phone exports, context exports, access logs, credentials and real-data screenshots outside every Git checkout. All other media files are rejected. `.gitignore` is a convenience, not a privacy boundary; ignored files can still be force-added or included in an archive.
 
 Contributions should reproduce issues with synthetic records. See [CONTRIBUTING.md](CONTRIBUTING.md). Code is released under the [MIT license](LICENSE); personal runtime records are not part of the source release.

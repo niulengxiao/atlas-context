@@ -1,6 +1,6 @@
 # MCP boundary — implemented in the experimental alpha
 
-The read-only stdio server and official SDK client roundtrip are now implemented. See [setup and enforced boundaries](docs/mcp.md) and [validation scope](docs/evidence.md). The native exporter and model-host answer evaluation remain separate work.
+The read-only stdio server and official SDK client roundtrip are implemented. A reusable phone exporter, explicit desktop connector and generated summary task are now available separately; see [phone handoff](docs/phone-handoff.md). Production app integration and broader model-host evaluation remain separate work. See [setup and enforced boundaries](docs/mcp.md) and [validation scope](docs/evidence.md).
 
 The implementation uses the official MCP SDK rather than a custom protocol stack. It registers one tool, `search_life_context`, with model-supplied arguments limited to a bounded search string and `include_inferred` (default false). Its grant, purpose and audience are bound in trusted local configuration. It re-reads the current grant on each call and does not serve a stale cache after expiry, revocation or draft revision changes.
 
