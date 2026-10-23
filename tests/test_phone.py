@@ -104,6 +104,7 @@ class PhoneHandoffTests(unittest.TestCase):
             self.assertNotIn("private_locator", item)
             self.assertNotIn("city", item)
             self.assertEqual(item["attribution"], "user_statement")
+            self.assertEqual(item["source"], "phone_export")
         self.assertEqual((self.root / "session").stat().st_mode & 0o777, 0o700)
         for path in (self.root / "session").iterdir():
             self.assertEqual(path.stat().st_mode & 0o777, 0o600)

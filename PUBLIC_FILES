@@ -23,6 +23,7 @@ atlas_context/mcp_demo.py
 atlas_context/mcp_server.py
 atlas_context/phone.py
 atlas_context/review_demo.py
+atlas_context/evaluation.py
 atlas_context/synthetic.py
 demo.py
 docs/agent-demo.md
@@ -35,6 +36,8 @@ docs/assets/atlas-timeline.png
 docs/demo.md
 docs/context-comparison.md
 docs/evidence.md
+docs/evaluation.md
+docs/device-checklist.md
 docs/mcp.md
 docs/phone-handoff.md
 docs/product-direction.md
@@ -49,6 +52,8 @@ mobile/PhotoReflectionView.swift
 pyproject.toml
 scripts/check_release.py
 scripts/create_phone_project.py
+scripts/test_phone_ui.py
+scripts/run_host_smoke.py
 tests/phone_contract_check.swift
 tests/photo_analysis_check.swift
 tests/PhoneReviewUITests.swift
@@ -57,4 +62,6 @@ tests/test_mcp.py
 tests/test_phone.py
 tests/test_release_guard.py
 tests/test_review_demo.py
+tests/test_retrieval.py
+tests/test_evaluation.py
 docs/assets/atlas-photo-reflection.png

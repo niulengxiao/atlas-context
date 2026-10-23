@@ -10,7 +10,7 @@ The [personal-agent direction](product-direction.md) now has a small implementat
 | Rich story generator | Sixteen drafts across three fictional years, eight retrieval scenarios |
 | MCP SDK roundtrip | Real subprocess stdio connection; 16 assertions including revocation on the same connection |
 | Legacy stdio check | Official SDK client negotiated 2025-11-25 and listed the one read-only tool |
-| Unit tests | 49 Python tests passed with the MCP extra: core disclosure, adapters, corrected-preference task purpose, reviewer lifecycle, MCP and publication/history checks |
+| Unit tests | 60 Python tests passed with the MCP extra: disclosure, adapters, corrected-preference task purpose, reviewer lifecycle, bounded English/Chinese retrieval, fixture evaluation, MCP and publication/history checks |
 | Reviewer walkthrough | Nine reproducible core checks, zero model/network calls; old session revoked and new preference separately reviewed |
 | Package installation | Built wheel inspected against public Python sources; installed reviewer command runs outside the source checkout |
 | Phone handoff | Strict schema, review hash, bounded lifetime, cloud opt-in, private runtime and revocation; fictional records only |
@@ -18,10 +18,12 @@ The [personal-agent direction](product-direction.md) now has a small implementat
 | Reflection state | Swift checks require nonblank bounded wording, invalidate confirmation on edits and keep scene questions out of exported records |
 | Local image processing | Apple Vision invoked on procedural pixels; preview metadata excludes invented GPS/EXIF marker; invalid/oversized bytes rejected; scene correctness is not benchmarked |
 | iOS companion | Photo-reflection and review/export views compile in an isolated simulator build; physical phone transfer remains unverified |
-| iOS UI checks | Four public test cases passed across local simulator runs: default denial/cloud off, confirmation before separate disclosure, session clearing, and selected-only JSON/final acknowledgment/system save picker. Off-screen lookup and changed picker-control assertions were corrected during QA. CI does not run these UI cases. |
+| iOS UI checks | Four public test cases cover default denial/cloud off, confirmation before separate disclosure, session clearing, and selected-only JSON/final acknowledgment/system save picker. Earlier local runs passed. The workflow now runs these cases on a new simulator for relevant source changes, tags and manual dispatch; actual run status remains the evidence for CI completion. |
 | Selected-photo integration | A focused local UI harness selected an explicitly identified procedural image through the real system picker, ran the local processing path and verified blank wording, disabled confirmation and no authorized export. No personal library was used. |
 | App screenshots and walkthrough | Actual native views in an isolated synthetic harness; no native export integration |
 | GitHub Actions | Core on Python 3.10/3.12; optional MCP integration on 3.11/3.12; see the actual workflow results |
+| Bounded retrieval | Defaults: 10 records/6,000 reviewed characters; stable lexical ranking, Han bigrams, strict budget validation, private-field exclusion and local citation resolution beyond the overview cap |
+| Controlled fixture evaluation | 15 fixed fictional tasks, 45 planned model conditions, 60 mechanical preparation/access checks. Identical prompt bytes per task across conditions; generation makes no model/network calls. See [method and rubrics](evaluation.md). |
 
 The MCP tests use a protocol client, not a language model. Citation previews concatenate exact approved sentences. They do not evaluate the quality of an LLM-generated introduction, source entailment or resistance to instructions embedded in retrieved evidence.
 

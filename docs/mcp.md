@@ -18,11 +18,17 @@ The last command speaks protocol messages on stdin/stdout; it is normally launch
 ```json
 {
   "name": "search_life_context",
-  "arguments": {"query": "photography", "include_inferred": false}
+  "arguments": {"query": "photography", "include_inferred": false, "max_results": 5, "max_chars": 6000}
 }
 ```
 
-Only these two arguments are accepted. The query is limited to 256 characters and 12 whitespace-separated terms; `include_inferred` must be a JSON boolean. Extra arguments, including file paths, purpose labels or grant selectors, are rejected. The response has structured context, opaque citations, attribution, coverage and untrusted-evidence handling guidance.
+Only these four arguments are accepted, all optional. The query is limited to 256 characters and 12 whitespace-separated terms; `include_inferred` must be a JSON boolean. `max_results` is an integer from 1 to 50 (default 10); `max_chars` is an integer from 2,500 to 20,000 (default 6,000). Booleans, strings and fractional numbers are rejected for budgets. Extra arguments, including file paths, purpose labels or grant selectors, are rejected.
+
+Nonempty queries use NFKC/case normalization, whole-word matching, a small English function-word list and overlapping Han bigrams. Any matching term qualifies; more distinct matches rank first, with review order breaking ties. This permits partial matches, so returned evidence need not answer the whole question. There is no stemming, synonym expansion, translation or semantic index. Private titles, OCR, locations and unapproved wording never influence search or ranking. Evidence labels are returned if reviewed but not searched.
+
+An empty/whitespace query requests an overview in review order. A punctuation-only or function-word-only nonempty query does not become an overview. Both modes obey result and character budgets, preserve exact wording and return `retrieval.mode`, `max_results`, `max_chars`, `returned_chars` and `has_more`. The character budget sums reviewed text, period, city and evidence label values, not JSON/protocol overhead. `has_more` concerns eligible authorized matches only. It does not expose private-source counts. Refine the query if it is true; a capped overview is not a complete life history. A larger budget never expands approval, attribution or expiry.
+
+The response also has opaque citations, source/attribution, coverage and untrusted-evidence handling guidance. Phone imports now use the generic source `phone_export`, because their v1 file does not authenticate a producer. Explicit Atlas-summary adapter records retain `atlas_memoir`; neither source string proves identity or truth. Existing v1 phone files remain accepted; regenerate old phone sessions to obtain the corrected source label.
 
 There are no tools to approve a grant, change records, resolve a citation to a source location, read raw OCR or open media. A trusted local UI can resolve citations separately.
 

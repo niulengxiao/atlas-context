@@ -6,7 +6,7 @@
 
 [Review in five minutes](docs/reviewer-guide.md) · [Chinese translation](README.zh-CN.md) · [Phone setup](docs/phone-handoff.md) · [Privacy](PRIVACY.md) · [Evidence](docs/evidence.md) · [MIT license](LICENSE)
 
-Atlas Context is an experimental personal context layer for AI agents. Selected everyday photos provide clues; **your explanations give them meaning**. You confirm what mattered, choose the exact text to share and let an agent use that background for a specific task, with citations and control over future access.
+Atlas Context is an open-source, consent-aware personal context layer for AI agents. Selected everyday photos provide clues; **your explanations give them meaning**. You confirm what mattered, choose the exact text to share and let an agent use that background for a specific task, with citations and control over future access.
 
 For developers, the reusable pieces are a SwiftUI photo-reflection and selective-export flow, a strict Python phone connector, exact-wording approval and one read-only MCP tool. They work independently of a particular model provider. The intended value is less repeated explanation and assistance grounded in the person's stated experiences, interests and tradeoffs.
 
@@ -72,6 +72,22 @@ These are actual isolated app views with fictional records. The second screensho
 
 The Python core uses the standard library on Python 3.10+. Optional MCP support uses Python 3.11+ and pinned SDK 2.3.0. Developers can embed the phone views or consume the reviewed file format and MCP tool independently. See [integration configuration](docs/mcp.md) and [contribution guidance](CONTRIBUTING.md).
 
+## Built on the experience of Atlas Memoir
+
+[Atlas Memoir](https://atlasmemoir.com/) is a separate iPhone product for reviewing life chapters and journeys, [available on the App Store](https://apps.apple.com/us/app/atlas-memoir/id6797416641). It provides product experience behind this project, not evidence of Atlas Context adoption. Its production integration with Atlas Context is not complete. The open-source companion runs independently.
+
+Phone files are labeled `phone_export`: the unsigned v1 format does not establish which app produced them. This source label is separate from `user_statement`, `recorded` or `inferred` attribution, and citations identify reviewed wording rather than verified photo content.
+
+## Bounded retrieval and repeatable evaluation
+
+Search uses normalized whole words and overlapping Han-character bigrams, ranked by matching terms. It searches approved text and optional reviewed period/city only. It is lexical retrieval, not semantic understanding. Empty queries retain an explicit overview mode. Defaults cap each response at 10 records and 6,000 characters of reviewed text/labels, without cutting sentences; `retrieval.has_more` signals omitted authorized matches. See [the tool contract and limits](docs/mcp.md).
+
+```sh
+python3 -m atlas_context.evaluation --output ../atlas-evaluation
+```
+
+This prepares **15 fixed fictional tasks, 45 planned model conditions and 60 mechanical checks**. It makes zero model/network calls. The same prompt is used for each task without context, with original context and with a separately reviewed correction. The pack includes Chinese tasks, unknown facts, scope changes and adversarial quoted text. [Evaluation instructions](docs/evaluation.md) separate access checks, citation support and usefulness; preparing the pack does not establish model quality or prompt-injection resistance.
+
 ## Evidence and limits
 
 - [Validation scope](docs/evidence.md) separates core tests, actual SDK transport, Swift/Python serialization, local image checks, native UI checks and limited actual Codex examples.
@@ -91,7 +107,7 @@ python3 -m unittest discover -s tests -v
 python3 scripts/check_release.py
 ```
 
-MCP-dependent tests skip when the optional SDK is absent. [CI](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml) checks core Python versions, actual MCP transport, installed-package operation, Swift contracts, local image metadata and iOS compilation. Native UI tests have a separately documented local scope.
+MCP-dependent tests skip when the optional SDK is absent. [CI](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml) checks core Python versions, actual MCP transport, installed-package operation and the fictional evaluation pack. Relevant phone changes, tags and manual runs also compile iOS, check Swift contracts/local image metadata and run four native review/export interaction tests on a new simulator. Documentation-only changes keep the Python/publication checks and skip the macOS job. See actual run results and [validation scope](docs/evidence.md).
 
 The repository contains code, fictional fixture generators and manually reviewed synthetic showcase assets. `PUBLIC_FILES` and `PUBLIC_MEDIA` define the exact publication allowlists. Keep real photos, life records, exports, grants, logs, credentials and personal screenshots outside every Git checkout. The guard supports manual review; it cannot recognize every private fact in prose.
 

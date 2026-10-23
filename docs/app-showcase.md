@@ -28,7 +28,7 @@ PNG EXIF and text metadata were removed without changing their pixel data. The s
 
 ## Integration status
 
-The Python summary adapter and MCP server run independently today. The native selective exporter and native Agent approval UI are still planned. These views show the project's existing product background; they do not establish external adoption, App Store availability or an already connected native Agent feature.
+The Python summary adapter and MCP server run independently today. A standalone native photo-reflection and selective review/export companion is implemented in this repository; production Atlas Memoir integration remains unverified. The earlier screenshots show product background, not an integrated app-to-Agent flow or evidence of Atlas Context adoption. Atlas Memoir itself is a separate [App Store product](https://apps.apple.com/us/app/atlas-memoir/id6797416641); see its [website](https://atlasmemoir.com/).
 
 
 ## New phone review companion

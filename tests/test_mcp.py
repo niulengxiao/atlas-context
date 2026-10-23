@@ -65,9 +65,11 @@ class MCPBoundaryTests(unittest.IsolatedAsyncioTestCase):
     async def test_tool_exposes_no_source_or_grant_controls(self):
         tools = (await self.client.list_tools()).tools
         self.assertEqual([tool.name for tool in tools], ["search_life_context"])
-        self.assertEqual(set(tools[0].input_schema["properties"]), {"query", "include_inferred"})
+        self.assertEqual(set(tools[0].input_schema["properties"]), {"query", "include_inferred", "max_results", "max_chars"})
         self.assertFalse(tools[0].input_schema["additionalProperties"])
         self.assertEqual(tools[0].input_schema["properties"]["query"]["maxLength"], 256)
+        self.assertEqual(tools[0].input_schema["properties"]["max_results"]["maximum"], 50)
+        self.assertEqual(tools[0].input_schema["properties"]["max_chars"]["minimum"], 2500)
         self.assertTrue(tools[0].annotations.read_only_hint)
 
     @connected
@@ -82,9 +84,21 @@ class MCPBoundaryTests(unittest.IsolatedAsyncioTestCase):
     async def test_extra_arguments_and_coerced_booleans_are_rejected(self):
         from mcp import MCPError
         for arguments in ({"grant": "untrusted"}, {"purpose": "anything"}, {"include_inferred": "false"},
-                          {"query": 42}, {"query": "x" * 257}, {"query": " ".join(["word"] * 13)}):
+                          {"query": 42}, {"query": "x" * 257}, {"query": " ".join(["word"] * 13)},
+                          {"max_results": True}, {"max_results": 0}, {"max_results": 51},
+                          {"max_chars": "6000"}, {"max_chars": 2499}, {"max_chars": 20001}):
             with self.assertRaises(MCPError):
                 await self.search(**arguments)
+
+    @connected
+    async def test_results_are_bounded_without_widening_the_grant(self):
+        result = await self.search(query="photography", max_results=2, max_chars=2500)
+        data = result.structured_content
+        self.assertEqual(len(data["items"]), 2)
+        self.assertTrue(data["retrieval"]["has_more"])
+        self.assertLessEqual(data["retrieval"]["returned_chars"], 2500)
+        self.edit("private-grant.json", dict(read(self.root / "private-grant.json"), active=False))
+        self.assertTrue((await self.search(max_results=50, max_chars=20000)).is_error)
 
     @connected
     async def test_changed_source_does_not_reuse_previous_approval(self):

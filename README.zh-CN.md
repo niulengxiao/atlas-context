@@ -1,5 +1,7 @@
 # Atlas Context
 
+当前改进：手机导入保守标为 `phone_export`，不再未经验证就归属到 Atlas Memoir；检索新增中英文词法匹配、排序，以及默认 10 条/6,000 字符的返回预算，`retrieval.has_more` 提示被省略的已授权匹配。更大的预算不会扩大授权。另有 [15 个虚构任务的受控评估包](docs/evaluation.md)，包含 45 个待运行的模型条件和 60 个无模型的准备/访问检查，不代表已证明真实用户效果。
+
 **让你的 Agent 带着你的人生背景，理解并帮助你。**
 
 [English](README.md) · [五分钟审阅](docs/reviewer-guide.md) · [产品方向](docs/product-direction.md) · [手机接入](docs/phone-handoff.md) · [隐私说明](PRIVACY.md) · [路线图](ROADMAP.md) · [MIT 许可](LICENSE)
@@ -35,7 +37,7 @@ python3 -m atlas_context.phone demo --scenario personal-assistance --output ../a
 ## 新增的公开演示
 
 - [三年虚构故事](docs/demo.md)：16 条草稿、14 条明确选择的记录、默认输出 13 条，涵盖 8 个检索场景。
-- [MCP 接入](docs/mcp.md)：Python 3.11+，固定的本地配置，仅开放 `query` 和 `include_inferred` 两个参数。
+- [MCP 接入](docs/mcp.md)：Python 3.11+，固定的本地配置；开放查询、是否包含推测、返回条数和文字预算四个参数，模型不能选择文件或扩大授权。
 - [App 展示与素材来源](docs/app-showcase.md)：独立构建和全新模拟器中的真实界面，全部使用新的虚构数据。原生分享审核与 Agent 批准分别处理。
 - [验证范围](docs/evidence.md)：区分自动化协议测试、有限模型试验与尚未完成的功能。
 

@@ -13,6 +13,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    outputs:
+      phone: ${{ steps.scope.outputs.phone }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - id: scope
+        env:
+          ATLAS_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          python - <<'PY'
+          import os, subprocess
+          base = os.environ.get('ATLAS_BASE', '')
+          run = os.environ['GITHUB_EVENT_NAME'] == 'workflow_dispatch' or os.environ['GITHUB_REF'].startswith('refs/tags/')
+          if not base or not base.strip('0'):
+              run = True
+          elif not run:
+              changed = subprocess.check_output(['git', 'diff', '--name-only', base, os.environ['GITHUB_SHA']], text=True).splitlines()
+              run = any(p.startswith(('mobile/', '.github/workflows/')) or p.endswith('.swift') or p in {
+                  'scripts/create_phone_project.py', 'scripts/test_phone_ui.py', 'atlas_context/phone.py', 'atlas_context/core.py'
+              } for p in changed)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('phone=' + str(run).lower() + '\n')
+          PY
+
   core:
     runs-on: ubuntu-24.04
     strategy:
@@ -30,6 +57,7 @@ jobs:
       - run: python -m atlas_context.phone demo --output "$RUNNER_TEMP/atlas-phone-demo"
       - run: python -m atlas_context.phone demo --scenario personal-assistance --output "$RUNNER_TEMP/atlas-assistance-demo"
       - run: python -m atlas_context.review_demo --output "$RUNNER_TEMP/atlas-review-demo"
+      - run: python -m atlas_context.evaluation --output "$RUNNER_TEMP/atlas-evaluation"
       - run: python scripts/check_release.py
       - name: Default README stays English
         run: python -c "import pathlib,re; assert not re.search(r'[\u3400-\u4dbf\u4e00-\u9fff]',pathlib.Path('README.md').read_text())"
@@ -54,7 +82,10 @@ jobs:
       - run: python scripts/check_release.py
 
   phone:
+    needs: changes
+    if: needs.changes.outputs.phone == 'true'
     runs-on: macos-15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -70,4 +101,6 @@ jobs:
       - run: '"$RUNNER_TEMP/photo-analysis-check"'
       - run: python scripts/create_phone_project.py --output "$RUNNER_TEMP/atlas-phone-app"
       - run: xcodebuild -quiet -project "$RUNNER_TEMP/atlas-phone-app/AtlasPhoneDemo.xcodeproj" -scheme AtlasPhoneDemo -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath "$RUNNER_TEMP/atlas-phone-build" CODE_SIGNING_ALLOWED=NO build
+      - name: Fictional native review and export interactions
+        run: python scripts/test_phone_ui.py --project "$RUNNER_TEMP/atlas-phone-app/AtlasPhoneDemo.xcodeproj" --results "$RUNNER_TEMP/atlas-phone-ui.xcresult" --derived-data "$RUNNER_TEMP/atlas-phone-ui-build"
       - run: python scripts/check_release.py

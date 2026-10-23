@@ -49,7 +49,7 @@ async def run(destination, mode="auto"):
         listed = await client.list_tools()
         assert [tool.name for tool in listed.tools] == ["search_life_context"]
         schema = listed.tools[0].input_schema
-        assert set(schema["properties"]) == {"query", "include_inferred"} and schema["additionalProperties"] is False
+        assert set(schema["properties"]) == {"query", "include_inferred", "max_results", "max_chars"} and schema["additionalProperties"] is False
         checks.append({"case": "only_bounded_read_tool_exposed", "passed": True})
         responses = []
         for query, inferred, count in SCENARIOS:

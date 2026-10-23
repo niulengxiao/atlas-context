@@ -24,6 +24,8 @@ The connector writes a new private runtime directory outside Git, with owner-onl
 
 The read-only MCP tool exposes approved wording and opaque citations. In the photo-reflection flow these citations identify the imported user statements, not independently verified photo content; no durable handle back to the original photo is retained. The tool cannot approve exports, choose files, read originals, edit records or extend access. Trusted configuration fixes the purpose and audience; they are local labels, not authenticated identities. Each tool call rechecks approval, expiry and imported draft revisions. Original phone data is not watched: a correction or deletion on the phone does not automatically update a previously exported copy. Revoke the desktop session and prepare a newly reviewed export after changes.
 
+Phone imports use `source=phone_export`; the unsigned v1 format cannot establish the producing app. The source label and whether wording is a user statement, recorded evidence or inference are separate dimensions. No source label is authenticated provenance. Retrieval ranks approved text only, defaults to 10 records and 6,000 reviewed characters, and reports omitted authorized matches without private-source counts. Those budgets minimize each response; they are not semantic redaction or a cumulative disclosure limit.
+
 ## Local models and cloud models
 
 The default disclosure mode is `local_only`. Use a local model and host that honors that policy. There is no verified local-model deployment bundled here.

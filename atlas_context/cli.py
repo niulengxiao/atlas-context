@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 import sys
 
-from .core import approve_local, query_context
+from .core import DEFAULT_CHARS, DEFAULT_RESULTS, approve_local, query_context
 from .importers import from_atlas_summary, from_media_catalog
 
 
@@ -48,6 +48,8 @@ def main(argv=None):
     query.add_argument("--audience", required=True)
     query.add_argument("--query", default="")
     query.add_argument("--include-inferred", action="store_true")
+    query.add_argument("--max-results", type=int, default=DEFAULT_RESULTS)
+    query.add_argument("--max-chars", type=int, default=DEFAULT_CHARS)
     args = parser.parse_args(argv)
     try:
         if args.command == "import-atlas":
@@ -58,7 +60,8 @@ def main(argv=None):
             result = approve_local(read(args.draft), read(args.review), purpose=args.purpose, audience=args.audience, expires_at=args.expires_at)
         else:
             result = query_context(read(args.draft), read(args.grant), purpose=args.purpose, audience=args.audience,
-                                   query=args.query, include_inferred=args.include_inferred)
+                                   query=args.query, include_inferred=args.include_inferred,
+                                   max_results=args.max_results, max_chars=args.max_chars)
             print(json.dumps(result, ensure_ascii=False, indent=2))
             return 0
         write(args.output, result)

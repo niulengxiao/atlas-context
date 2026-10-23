@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.1a1
+
+- Label unsigned phone imports `phone_export`, separately from user-statement/recorded/inferred attribution; preserve the v1 phone contract.
+- Add bounded whole-word/Han-bigram retrieval, stable relevance ordering, capped overviews and explicit `has_more`. Keep exact wording, private-field exclusion and per-call authorization checks.
+- Expose strict result/character budgets in MCP and local preview; retain local citation resolution beyond the capped overview.
+- Prepare 15 fixed fictional evaluation tasks with common prompts, original/corrected conditions, human rubrics and revoked controls. Preparation performs no model calls.
+- Add native UI interactions to relevant-source/tag/manual CI runs while retaining lightweight checks for documentation changes.
+- Clarify the separate App Store product, standalone companion and pending production integration.
+
 ## 0.4.0a2
 
 - Add a five-minute reviewer guide and one-command fictional lifecycle: nine checks, explicit old-session revocation and separately reviewed changed preferences.

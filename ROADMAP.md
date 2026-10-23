@@ -21,6 +21,8 @@ The alpha now adds selected-photo scene prompts and user explanations to the rev
 - [x] Exact-wording local approval with purpose, audience and expiry.
 - [x] Retrieval over approved projections only; inference excluded by default.
 - [x] Draft revision checks, local revocation and opaque citations.
+- [x] Generic unsigned-phone provenance, bounded lexical search, explicit capped overviews and Chinese phrase tests.
+- [x] Prepare 15 controlled fictional tasks with fixed prompts, human rubrics and revoked access controls; model scoring remains separate.
 - [x] Minimal, three-year and phone-handoff fictional demos, with public-source/history guard.
 - [x] English and Chinese documentation.
 - [x] Native product screenshots and walkthrough from an isolated fictional harness.
@@ -35,6 +37,7 @@ The alpha now adds selected-photo scene prompts and user explanations to the rev
 - [x] Require exact-file desktop review, bind a private session and generate summary instructions.
 - [x] Provide a desktop revocation command and check existing-connection denial.
 - [ ] Integrate the component in production Atlas Memoir and verify physical-device transfer.
+- [ ] Complete the separate [physical-device acceptance checklist](docs/device-checklist.md) with synthetic material.
 - [ ] Refresh drafts when connected sources change; require re-review of affected records.
 - [ ] Support correction and revocation through a persistent native connection interface.
 
@@ -48,7 +51,7 @@ The standalone component lets a user select and edit fictional text, inspect the
 - [ ] Exercise the actual client/host trust boundary, including adversarial retrieved text.
 - [x] Keep approval, source resolution and original media access outside the tool interface.
 
-Verified with the official SDK over a real subprocess connection. Actual model-host tests have a smaller documented scope; see [evidence](docs/evidence.md). Client labels are still local policy labels, not multi-user authentication.
+Verified with the official SDK over a real subprocess connection. Actual model-host tests have a smaller documented scope; see [evidence](docs/evidence.md) and [controlled evaluation](docs/evaluation.md). Client labels are still local policy labels, not multi-user authentication.
 
 ## Then: evaluate one writing task
 
