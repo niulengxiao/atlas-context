@@ -32,6 +32,7 @@ final class PhoneReviewUITests: XCTestCase {
         let review = app.buttons["review-export"]
         reveal(review, in: app)
         XCTAssertFalse(review.isEnabled)
+        reveal(app.switches["allow-cloud"], in: app, towardTop: true)
         XCTAssertEqual(app.switches["allow-cloud"].value as? String, "0")
     }
 
@@ -48,26 +49,29 @@ final class PhoneReviewUITests: XCTestCase {
 
         let review = app.buttons["review-export"]
         reveal(review, in: app)
+        reveal(app.switches["allow-cloud"], in: app, towardTop: true)
         XCTAssertEqual(app.switches["allow-cloud"].value as? String, "0")
+        reveal(review, in: app)
         XCTAssertTrue(review.isEnabled)
         review.tap()
         XCTAssertTrue(app.navigationBars["Review before export"].waitForExistence(timeout: 5))
 
-        let save = app.buttons["save-export"]
-        XCTAssertTrue(save.waitForExistence(timeout: 5))
-        reveal(save, in: app)
-        XCTAssertFalse(save.isEnabled)
-        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "local_only")).firstMatch.exists)
-        let payload = app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "atlas-context.phone")).firstMatch.label
+        let outgoing = app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "atlas-context.phone")).firstMatch
+        XCTAssertTrue(outgoing.waitForExistence(timeout: 5))
+        let payload = outgoing.label
+        XCTAssertTrue(payload.contains("local_only"))
         XCTAssertTrue(payload.contains("learning photography"))
         XCTAssertFalse(payload.contains("community garden"))
         XCTAssertFalse(payload.contains("short trip"))
+        let save = app.buttons["save-export"]
+        reveal(save, in: app)
+        XCTAssertFalse(save.isEnabled)
         let acknowledgment = app.switches["acknowledge-export"]
         reveal(acknowledgment, in: app, towardTop: true)
         acknowledgment.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
         XCTAssertEqual(acknowledgment.value as? String, "1")
-        XCTAssertTrue(save.isEnabled)
         reveal(save, in: app)
+        XCTAssertTrue(save.isEnabled)
         save.tap()
         // System file picker must open only after both explicit decisions.
         XCTAssertTrue(app.buttons["DOCPicker.actionButton"].waitForExistence(timeout: 10)
@@ -98,7 +102,9 @@ final class PhoneReviewUITests: XCTestCase {
         selected.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
         let review = app.buttons["review-export"]
         reveal(review, in: app)
+        reveal(app.switches["allow-cloud"], in: app, towardTop: true)
         XCTAssertEqual(app.switches["allow-cloud"].value as? String, "0")
+        reveal(review, in: app)
         review.tap()
         let payload = app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "atlas-context.phone")).firstMatch
         XCTAssertTrue(payload.waitForExistence(timeout: 5))

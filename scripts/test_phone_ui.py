@@ -18,6 +18,7 @@ def run(project, results, derived):
     device = subprocess.check_output(["xcrun", "simctl", "create", "Atlas Context Fictional UI",
                                       "com.apple.CoreSimulator.SimDeviceType.iPhone-16", runtime["identifier"]], text=True).strip()
     try:
+        print("Running fictional UI checks on iOS " + runtime["version"], flush=True)
         subprocess.run(["xcodebuild", "-quiet", "-project", str(Path(project).resolve()), "-scheme", "AtlasPhoneDemo",
                         "-destination", "platform=iOS Simulator,id=" + device, "-derivedDataPath", str(Path(derived).resolve()),
                         "-resultBundlePath", str(Path(results).resolve()), "-parallel-testing-enabled", "NO",
@@ -25,6 +26,10 @@ def run(project, results, derived):
                         "-test-timeouts-enabled", "YES", "-maximum-test-execution-time-allowance", "120",
                         "CODE_SIGNING_ALLOWED=NO", "test"], check=True, timeout=1200)
     finally:
+        if (Path(results) / "Info.plist").exists():
+            # Only fixed fictional app content is exercised. Print precise
+            # failures without uploading a simulator archive or account logs.
+            subprocess.run(["xcrun", "xcresulttool", "get", "test-results", "summary", "--path", str(results), "--format", "json"])
         # This script owns this new simulator; never shut down a user's device.
         subprocess.run(["xcrun", "simctl", "shutdown", device], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         subprocess.run(["xcrun", "simctl", "delete", device], check=True)
