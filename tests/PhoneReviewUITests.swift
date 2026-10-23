@@ -76,7 +76,8 @@ final class PhoneReviewUITests: XCTestCase {
         // System file picker must open only after both explicit decisions.
         XCTAssertTrue(app.buttons["DOCPicker.actionButton"].waitForExistence(timeout: 10)
                       || app.buttons["Save"].waitForExistence(timeout: 5)
-                      || app.buttons["Export"].exists || app.navigationBars["Move"].exists,
+                      || app.buttons["Export"].exists || app.buttons["Move"].exists
+                      || app.navigationBars["Move"].exists,
                       app.debugDescription)
     }
 
