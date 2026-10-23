@@ -1,28 +1,42 @@
 # Atlas Context
 
-**Turn selected phone memories into cited Agent summaries, with a review before sharing.**
+**Help your agent understand the life behind your requests.**
 
 [![Synthetic checks](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml/badge.svg)](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml)
 
-[Chinese translation](README.zh-CN.md) · [Phone to Agent](docs/phone-handoff.md) · [Privacy](PRIVACY.md) · [MCP setup](docs/mcp.md) · [Roadmap](ROADMAP.md) · [MIT license](LICENSE)
+[Chinese translation](README.zh-CN.md) · [Product direction](docs/product-direction.md) · [Phone to Agent](docs/phone-handoff.md) · [Privacy](PRIVACY.md) · [MCP setup](docs/mcp.md) · [Roadmap](ROADMAP.md) · [MIT license](LICENSE)
 
-Atlas Context turns selected life records into bounded, traceable context for tasks such as writing a short biography or a yearly reflection. You choose the records, review the exact outgoing text and set a local approval period. The context preserves the difference between recorded material, your own statements and system inferences.
+Atlas Context is an experimental personal context layer for AI agents. The goal is to help an agent understand your experiences, interests and preferences through selected everyday photos and your own explanations, so future assistance can start with useful background. You should be able to inspect that understanding, correct it as your life changes and choose which parts to share.
 
-**Status: experimental alpha.** A reusable iOS review/export component, a fictional companion app, a strict phone-file connector and a read-only MCP stdio server are implemented. The intended flow is **select on phone → review exact wording → transfer JSON → connect → ask your Agent for a cited summary**. Automatic USB scanning, production Atlas Memoir integration and live phone synchronization are not implemented. See the [phone guide](docs/phone-handoff.md) and [validation scope](docs/evidence.md).
+For developers building personal agents, this repository provides an iOS selected-photo reflection flow, a Python review core and read-only MCP retrieval. The phone uses Apple's local Vision classifier to suggest a small set of scene questions. You explain what a moment meant, confirm your wording and separately choose what an agent may receive. This is bounded scene classification and template-based clarification, not generative photo understanding or a long-term personality model.
+
+**Status: experimental alpha.** The implemented flow is **choose up to five photos → local scene question → explain or correct → confirm your words → review exact export → connect → ask your agent for relevant help with citations**. A fictional walk-through works without choosing any photos. Automatic USB scanning, production Atlas Memoir integration, live phone synchronization and durable preference learning remain future work. See the [phone guide](docs/phone-handoff.md) and [validation scope](docs/evidence.md).
 
 > **Privacy first:** nothing is selected by default. The phone export contains reviewed text, not original photos, videos, GPS, photo IDs or a full backup. Cloud access defaults off. Using a cloud Agent sends approved text to its provider; revocation blocks future reads but cannot recall previous copies. Text can still contain identifying details. Read the [full privacy statement](PRIVACY.md).
 
-## Connect a fictional phone story in one command
+## Try a preference and a correction
 
 ```sh
-python3 -m atlas_context.phone demo --output ../atlas-phone-demo
+python3 -m atlas_context.phone demo --scenario personal-assistance --output ../atlas-assistance-demo
 ```
 
-This creates a minimal fictional phone bundle, a private MCP session and a three-record cited evidence preview. It makes no model call. Bind `session/private-server.json` to your MCP host, then give the Agent `session/private-agent-task.md` for a short overview, timeline, citations and evidence limits. Use a local model for the default `local_only` session. For iPhone setup and real reviewed files, follow [Phone to Agent](docs/phone-handoff.md). Agents should read [AGENTS.md](AGENTS.md) first.
+The fictional person enjoys quiet walks and flexible plans. Their many café photos were for work, not a café-hopping preference. This command creates a private MCP session and two cited user statements; no café-hopping preference is created or exported. It makes no model call. Bind `session/private-server.json` to your MCP host, give the agent `session/private-agent-task.md` and ask: **“Help me plan a relaxed day off. Explain how my stated preferences affect the options.”** Use a local model for the default `local_only` session. The [phone guide](docs/phone-handoff.md) explains the native photo flow and connection. Agents should read [AGENTS.md](AGENTS.md) first.
 
-<img src="docs/assets/atlas-phone-review.png" width="300" alt="iOS phone context review: privacy notice, no records selected and optional metadata off, using fictional records" />
+To run the phone experience in Xcode, generate an isolated project:
 
-The new standalone iOS companion uses fictional records and requests no Photos permission. It provides the review/export component; it is not an installed Atlas Memoir production release.
+```sh
+python3 scripts/create_phone_project.py --output ../atlas-phone-app
+open ../atlas-phone-app/AtlasPhoneDemo.xcodeproj
+```
+
+Choose **Try fictional walk-through**, or explicitly choose up to five images with the system picker. Actual selected images start with blank explanations. Confirming a statement does not share it: the separate export screen starts with no records selected and cloud use off. Editing an explanation clears its confirmation. **Clear this session** removes the app's in-memory images and explanations; previously exported copies must be revoked/deleted separately.
+
+<p>
+  <img src="docs/assets/atlas-photo-reflection.png" width="300" alt="Fictional photo reflection: tentative questions, the person's own explanations and a café-work correction before confirmation" />
+  <img src="docs/assets/atlas-phone-review.png" width="300" alt="iOS phone context review: privacy notice, no records selected and optional metadata off, using fictional records" />
+</p>
+
+Left: the current fictional explanation flow. Right: the earlier text export component, also using fictional records. The companion uses the system picker rather than requesting full-library access; Apple's picker may download a selected iCloud photo. It is not an installed Atlas Memoir production release.
 
 ## See the product background
 
@@ -38,9 +52,13 @@ Atlas Memoir is the native timeline and correction product behind this explorati
 
 ## Why this project
 
-A photo timestamp can locate a moment; it rarely explains what that moment meant to you. A useful writing assistant needs your explanation, a way to inspect its sources and a clear boundary around what you agree to disclose.
+A photo can provide a clue about a moment. Your explanation gives it personal meaning. A set of cafe photos might reflect a favorite pastime or work on a menu design project; the agent should ask before treating either interpretation as a preference.
 
-Atlas Context explores that boundary. Its first task is small: prepare a few reviewed records for one personal introduction or reflection. It does not require a complete life archive. Permission to share a statement does not establish that statement as true.
+The first implemented experience is **selected photo clues → a template question → your explanation or correction → reviewed life context → task-scoped agent help**. For example, a person can explain that weekend walks are a way to slow down and that they prefer leaving part of the day unplanned. A connected agent receives that approved context to inform its options, cite its basis and check whether the preference still applies. The project does not bundle a local language model.
+
+Understanding someone's perspective should help an agent consider their stated goals and tradeoffs while still surfacing alternatives and blind spots. It should not turn a few images into a fixed personality label. Observations, user statements and model hypotheses stay distinct; permission to disclose a sentence does not prove it true.
+
+The demos exercise the reflection, review and transport path. Whether this improves everyday help still needs independent user feedback and comparison against assistance without personal context. See the [fictional walkthrough, success criteria and implementation boundaries](docs/product-direction.md).
 
 ## Try it with fictional records
 
@@ -126,6 +144,7 @@ Selected media rows ──────┘                           │
 ```
 
 - **Local Media Library** organizes media and notes. This prototype reads explicitly selected catalog rows in read-only mode.
+- **Phone reflection** provides local scene questions, your explanations and confirmation before separate disclosure. Its citations identify reviewed statements, with no retained handle to the original photos.
 - **Atlas Memoir** is the intended timeline and correction interface. Its summary adapter accepts a supplied projection. A reusable SwiftUI selective exporter and fictional companion app now provide a versioned phone handoff; production app integration remains pending. Full backup envelopes are rejected.
 - **Atlas Context** contains the reusable review and retrieval core in this repository.
 - **Agent integration** can consume approved context using the read-only `search_life_context` MCP stdio tool. Its grant, files, purpose and audience are bound by trusted local configuration, outside model arguments.
@@ -134,6 +153,9 @@ Selected media rows ──────┘                           │
 
 | Rule | Current behavior |
 |---|---|
+| Selected photos | System picker, up to five images; no library enumeration; local scene prompts only |
+| Meaning and correction | Only confirmed user explanations become candidates; editing invalidates confirmation |
+| Separate disclosure | Confirmed candidates still start unselected on the export screen |
 | Explicit selection | Import creates drafts, with no implicit disclosure permission |
 | Exact wording | Local approval stores the text the user chooses to disclose; no automatic prose redaction |
 | Bounded access | Each query checks local purpose, audience, expiry and active status |
@@ -174,7 +196,7 @@ atlas_context/
   mcp_server.py       # One read-only stdio tool, with host-bound configuration
   mcp_demo.py         # Real SDK client/server roundtrip and invalidation checks
   phone.py            # Strict reviewed phone handoff, local session and revocation
-mobile/               # SwiftUI review/export component and fictional iPhone demo
+mobile/               # Local photo clues, user reflection and selective SwiftUI export
 demo.py               # Generates fictional records and checks four scenarios
 tests/test_context.py # Synthetic behavior tests
 scripts/check_release.py
@@ -184,6 +206,6 @@ PUBLIC_MEDIA          # Exact hashes of manually reviewed synthetic showcase ass
 
 ## Public code, private records
 
-This repository contains code, documentation, synthetic fixture generators and five explicitly reviewed synthetic showcase assets. Keep real photos, videos, catalogs, OCR, notes, drafts, grants, phone exports, context exports, access logs, credentials and real-data screenshots outside every Git checkout. All other media files are rejected. `.gitignore` is a convenience, not a privacy boundary; ignored files can still be force-added or included in an archive.
+This repository contains code, documentation, synthetic fixture generators and six explicitly reviewed synthetic showcase assets. Keep real photos, videos, catalogs, OCR, notes, drafts, grants, phone exports, context exports, access logs, credentials and real-data screenshots outside every Git checkout. All other media files are rejected. `.gitignore` is a convenience, not a privacy boundary; ignored files can still be force-added or included in an archive.
 
 Contributions should reproduce issues with synthetic records. See [CONTRIBUTING.md](CONTRIBUTING.md). Code is released under the [MIT license](LICENSE); personal runtime records are not part of the source release.

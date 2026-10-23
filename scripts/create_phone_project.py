@@ -1,4 +1,4 @@
-"""Create an isolated Xcode demo project from public sources; never scan Photos."""
+"""Create an isolated Xcode companion project; Photos are read only after picker selection."""
 import argparse
 from pathlib import Path
 import shutil
@@ -77,11 +77,20 @@ def create(destination):
     content = content.replace('children = (A00000000000000000000005);',
                               'children = (A00000000000000000000005, A00000000000000000000042);')
     content = content.replace(' };\n rootObject', UI_TEST_OBJECTS + '\n };\n rootObject')
+    extra_sources = ("PhotoReflection.swift", "LocalPhotoAnalyzer.swift", "PhotoReflectionView.swift")
+    for index, name in enumerate(extra_sources, start=4):
+        reference = f"A0000000000000000000001{index}"
+        build = f"A0000000000000000000002{index}"
+        content = content.replace('A00000000000000000000011, A00000000000000000000012', f'{reference}, A00000000000000000000011, A00000000000000000000012')
+        content = content.replace('A00000000000000000000021, A00000000000000000000022', f'{build}, A00000000000000000000021, A00000000000000000000022')
+        objects = (f'  {reference} = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {name}; sourceTree = "<group>"; }};\n'
+                   f'  {build} = {{isa = PBXBuildFile; fileRef = {reference}; }};\n')
+        content = content.replace(' };\n rootObject', objects + ' };\n rootObject')
     (project / "project.pbxproj").write_text(content, encoding="utf-8")
     schemes = project / "xcshareddata" / "xcschemes"
     schemes.mkdir(parents=True)
     (schemes / "AtlasPhoneDemo.xcscheme").write_text(scheme(), encoding="utf-8")
-    for name in ("PhoneBundle.swift", "AtlasContextExportView.swift", "AtlasPhoneDemoApp.swift"):
+    for name in ("PhoneBundle.swift", "AtlasContextExportView.swift", "AtlasPhoneDemoApp.swift", *extra_sources):
         shutil.copyfile(ROOT / "mobile" / name, destination / name)
     shutil.copyfile(ROOT / "tests" / "PhoneReviewUITests.swift", destination / "PhoneReviewUITests.swift")
     print("Created an isolated fictional demo project. Choose a signing team in Xcode for a physical device.")

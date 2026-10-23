@@ -1,6 +1,6 @@
 import Foundation
 
-// Run alongside mobile/PhoneBundle.swift. The resulting file is fictional.
+// Run alongside PhoneBundle.swift and PhotoReflection.swift. All records are fictional.
 @main
 struct PhoneContractCheck {
     static func main() throws {
@@ -23,8 +23,37 @@ struct PhoneContractCheck {
                 fatalError("Invalid export accepted")
             } catch PhoneExportError.invalidSelection { }
         }
+        precondition(PhotoClue.suggested(by: [("face", 0.99), ("coffee", 0.1)]) == .unknown)
+        precondition(PhotoClue.suggested(by: [("coffee", 0.8)]) == .food)
+        var reflection = PhotoReflection(clue: .food)
+        precondition(reflection.reviewedRecord == nil)
+        do { try reflection.confirm(); fatalError("Blank explanation accepted") }
+        catch PhoneExportError.invalidSelection { }
+        reflection.statement = "These café photographs were for work, not a leisure preference."
+        precondition(reflection.reviewedRecord == nil)
+        try reflection.confirm()
+        precondition(reflection.reviewedRecord?.attribution == "user_statement")
+        reflection.statement = "These café photographs were for a work assignment. They do not mean I enjoy visiting busy cafés."
+        precondition(!reflection.isConfirmed && reflection.reviewedRecord == nil)
+        try reflection.confirm()
+        var walk = PhotoReflection.fictional[0]
+        precondition(walk.reviewedRecord == nil)
+        try walk.confirm()
+        let assistance = try PhoneBundle(records: [walk.reviewedRecord!, reflection.reviewedRecord!],
+                                         purpose: "personal_assistance", allowCloud: false)
+        let assistanceData = try assistance.encoded()
+        let assistanceObject = try JSONSerialization.jsonObject(with: assistanceData) as! [String: Any]
+        for item in assistanceObject["records"] as! [[String: Any]] {
+            precondition(Set(item.keys) == Set(["text", "attribution"]))
+        }
+        // Oversized edits must invalidate a previous confirmation, too.
+        reflection.statement = String(repeating: "x", count: 2001)
+        precondition(!reflection.canConfirm && reflection.reviewedRecord == nil)
         if CommandLine.arguments.count > 1 {
             try data.write(to: URL(fileURLWithPath: CommandLine.arguments[1]), options: [.withoutOverwriting, .completeFileProtection])
+        }
+        if CommandLine.arguments.count > 2 {
+            try assistanceData.write(to: URL(fileURLWithPath: CommandLine.arguments[2]), options: [.withoutOverwriting, .completeFileProtection])
         }
         print("Swift phone contract checks passed; fictional export only.")
     }

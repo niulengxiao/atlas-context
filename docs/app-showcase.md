@@ -33,4 +33,10 @@ The Python summary adapter and MCP server run independently today. The native se
 
 ## New phone review companion
 
-`atlas-phone-review.png` shows the separate open-source SwiftUI phone review/export component in an isolated simulator, using four newly generated fictional candidate records. No record is selected and optional period/city fields are off. The app requests no Photos permission. The screenshot was visually reviewed and its EXIF removed without changing compressed pixel data; its exact hash is listed in `PUBLIC_MEDIA`. This image does not show production Atlas Memoir integration. See [phone handoff](phone-handoff.md).
+`atlas-phone-review.png` shows the separate open-source SwiftUI phone review/export component in an isolated simulator, using four newly generated fictional candidate records. No record is selected and optional period/city fields are off. That earlier build had no photo picker. The screenshot was visually reviewed and its EXIF removed without changing compressed pixel data; its exact hash is listed in `PUBLIC_MEDIA`. This image does not show production Atlas Memoir integration. See [phone handoff](phone-handoff.md).
+
+## Photo reflection and a corrected assumption
+
+`atlas-photo-reflection.png` was captured from the current companion's **Fictional walk-through** in an isolated simulator on 2026-10-23. The two explanations are hard-coded fictional examples from `PhotoReflection.fictional`: quiet outdoor walks and café photos taken for work. The scene questions are templates, not image-model outputs. Neither explanation is confirmed in this screenshot. No real photo, account, location or life record appears.
+
+The current companion also accepts explicitly selected photos through Apple's system picker, with no full-library permission request. That path was tested separately using an identified procedural image; the app started with blank, unconfirmed wording. The screenshot itself shows the fictional path, not a production Atlas Memoir integration or a generated life analysis. It was manually reviewed and metadata was removed without changing compressed pixels. The exact hash is bound in `PUBLIC_MEDIA`.

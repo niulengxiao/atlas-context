@@ -9,7 +9,7 @@ import unittest
 
 from atlas_context.cli import read, write
 from atlas_context.core import query_context
-from atlas_context.phone import connect, demo, load_bundle, revoke, synthetic_bundle, validate_bundle
+from atlas_context.phone import connect, demo, load_bundle, revoke, synthetic_bundle, synthetic_assistance_bundle, validate_bundle
 from atlas_context.mcp_server import BoundContext, build_server
 
 
@@ -140,6 +140,37 @@ class PhoneHandoffTests(unittest.TestCase):
         report = demo(self.root / "demo")
         self.assertEqual(report["default_evidence_count"], 3)
         self.assertFalse(report["model_called"])
+
+    def test_personal_assistance_keeps_correction_and_excludes_photo_guess(self):
+        self.bundle = synthetic_assistance_bundle()
+        self.path.write_text(json.dumps(self.bundle))
+        self.connection()
+        bound = self.bound()
+        result = bound.search()
+        self.assertEqual(len(result["items"]), 2)
+        self.assertEqual(len(bound.search(include_inferred=True)["items"]), 2)
+        self.assertTrue(all(item["attribution"] == "user_statement" for item in result["items"]))
+        self.assertIn("work assignment", " ".join(item["text"] for item in result["items"]))
+        self.assertFalse(any("café hopping" in item["text"] for item in result["items"]))
+        task = (self.root / "session" / "private-agent-task.md").read_text()
+        self.assertIn("honor explicit corrections", task)
+        self.assertNotIn(self.bundle["records"][0]["text"], task)
+        # Same trusted configuration, purpose gate and revocation as life summaries.
+        grant = read(self.root / "session" / "private-grant.json")
+        with self.assertRaises(PermissionError):
+            query_context(read(self.root / "session" / "private-draft.json"), grant,
+                          purpose="life_reflection", audience="fictional_local_agent")
+        revoke(self.root / "session")
+        with self.assertRaises(PermissionError):
+            bound.search()
+
+    def test_personal_assistance_demo_uses_existing_review_pipeline(self):
+        report = demo(self.root / "assistance", scenario="personal-assistance")
+        self.assertEqual(report["default_evidence_count"], 2)
+        self.assertFalse(report["model_called"])
+        with self.assertRaises(ValueError):
+            demo(self.root / "bad", scenario="unknown")
+        self.assertFalse((self.root / "bad").exists())
 
 
 @unittest.skipUnless(importlib.util.find_spec("mcp"), "Optional MCP extra required")

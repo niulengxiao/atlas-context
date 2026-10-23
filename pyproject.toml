@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "atlas-context"
-version = "0.3.0a1"
+version = "0.4.0a1"
 description = "User-reviewed personal context with bounded local disclosure"
 readme = "README.md"
 requires-python = ">=3.10"

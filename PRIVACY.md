@@ -4,11 +4,17 @@
 
 ## What you choose before export
 
+The phone accepts up to five explicitly chosen images through Apple's system Photos picker. It does not request full-library access, enumerate albums or run a background scan. Each image is capped at 20 MB after loading, downsampled to at most 1,024 pixels and passed to Apple's local Vision scene classifier. A small allowlist chooses a tentative template question; there is no face recognition, OCR, identity matching or generative model call. Unrecognized scenes get a neutral question. The system picker may itself download a selected iCloud image from Apple.
+
+Image bytes, pixel-only previews, local scene clues and explanations remain in app memory and are not written by the app to a database or sent to an agent. The app does not copy source EXIF/GPS into its previews. **Clear this session** removes that in-memory session. This is not a claim to erase OS-managed photo caches, screenshots or previous exports. No thumbnails, classifier labels, confidence scores or source handles enter the phone export. Selecting a photo does not authorize derived personal judgments.
+
+You type what a moment meant and confirm the exact explanation. A confirmed explanation becomes a `user_statement` candidate, not a verified observation or automatic preference. Editing it clears confirmation. Confirmation does not disclose it: a separate export review still starts unselected. Long-term preference learning and generative visual understanding are not implemented.
+
 The iOS component selects nothing by default. You choose individual records, edit the exact outgoing sentences, optionally include a year/month or city, pick a task and review the entire JSON before saving. City and period fields default off. Inferred records keep their attribution and are excluded from default Agent retrieval.
 
 The versioned phone contract permits only reviewed text, attribution and optional coarse period, city and evidence label, plus temporary export/task metadata. It rejects extra fields, including original photo IDs, filesystem locations, GPS coordinates, raw OCR, thumbnails, device identifiers and full backup envelopes. It limits a bundle to 50 records, 20,000 text characters and 256 KB. **These structural restrictions do not redact sentences.** Names, precise locations or sensitive facts typed into text will still be disclosed unless you remove them.
 
-The companion demo has no Photos permission or scanner. An embedding app must apply its own photo permissions and local processing rules before offering draft text. Hidden Atlas stages must be excluded by the embedding adapter; social-sharing permissions are not Agent consent.
+The fictional walk-through uses invented explanations and no library access. Development and published demonstrations use only fictional statements or procedural test images. An embedding app must apply its own photo permissions and local processing rules before offering draft text. Hidden Atlas stages must be excluded by the embedding adapter; social-sharing permissions are not Agent consent.
 
 ## What happens on your computer
 
@@ -16,7 +22,7 @@ Transfer the reviewed JSON to a trusted computer, for example with AirDrop. USB 
 
 The connector writes a new private runtime directory outside Git, with owner-only directory/file modes on POSIX systems. It never replaces an existing session. These modes are not encryption and do not protect against the account owner, malware, backups or a privileged process.
 
-The read-only MCP tool exposes approved wording and opaque citations. It cannot approve exports, choose files, read originals, edit records or extend access. Trusted configuration fixes the purpose and audience; they are local labels, not authenticated identities. Each tool call rechecks approval, expiry and imported draft revisions. Original phone data is not watched: a correction or deletion on the phone does not automatically update a previously exported copy. Revoke the desktop session and prepare a newly reviewed export after changes.
+The read-only MCP tool exposes approved wording and opaque citations. In the photo-reflection flow these citations identify the imported user statements, not independently verified photo content; no durable handle back to the original photo is retained. The tool cannot approve exports, choose files, read originals, edit records or extend access. Trusted configuration fixes the purpose and audience; they are local labels, not authenticated identities. Each tool call rechecks approval, expiry and imported draft revisions. Original phone data is not watched: a correction or deletion on the phone does not automatically update a previously exported copy. Revoke the desktop session and prepare a newly reviewed export after changes.
 
 ## Local models and cloud models
 

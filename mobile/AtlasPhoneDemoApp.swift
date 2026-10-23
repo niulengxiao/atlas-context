@@ -5,6 +5,9 @@ struct AtlasPhoneDemoApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
+                if !ProcessInfo.processInfo.arguments.contains("--export-fixture") {
+                    PhotoReflectionView()
+                } else {
                 VStack(spacing: 0) {
                     Text("SYNTHETIC DEMO · FICTIONAL RECORDS")
                         .font(.caption.bold()).padding(10).frame(maxWidth: .infinity)
@@ -15,6 +18,7 @@ struct AtlasPhoneDemoApp: App {
                         PhoneCandidate(record: PhoneRecord(text: "In 2025, I put together a small photography portfolio.", attribution: "user_statement", period: "2025")),
                         PhoneCandidate(record: PhoneRecord(text: "A short trip may have happened in 2024.", attribution: "inferred", period: "2024"))
                     ])
+                }
                 }
             }
         }

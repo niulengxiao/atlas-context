@@ -11,7 +11,7 @@ struct PhoneCandidate: Identifiable {
 
 struct AtlasContextExportView: View {
     @State var candidates: [PhoneCandidate]
-    @State private var purpose = "life_reflection"
+    @State var purpose = "life_reflection"
     @State private var allowCloud = false
     @State private var review: ExportReview?
     @State private var showingError = false
@@ -53,6 +53,7 @@ struct AtlasContextExportView: View {
                     Text("Life reflection").tag("life_reflection")
                     Text("Short biography").tag("short_bio")
                     Text("Year review").tag("year_review")
+                    Text("Personal assistance").tag("personal_assistance")
                 }
                 Text("Export expires one hour after you open the review. A copied file remains readable after expiry; expiry limits future access through Atlas Context.")
                 Toggle("Allow a cloud Agent to receive this text", isOn: $allowCloud)

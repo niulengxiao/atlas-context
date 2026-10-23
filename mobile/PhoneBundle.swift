@@ -21,7 +21,7 @@ struct PhoneBundle: Encodable, Sendable {
 
     init(records: [PhoneRecord], purpose: String, allowCloud: Bool, lifetime: TimeInterval = 3600, now: Date = .now) throws {
         guard (1...50).contains(records.count), (60...86400).contains(lifetime),
-              ["life_reflection", "short_bio", "year_review"].contains(purpose),
+              ["life_reflection", "short_bio", "year_review", "personal_assistance"].contains(purpose),
               records.reduce(0, { $0 + $1.text.unicodeScalars.count }) <= 20_000 else {
             throw PhoneExportError.invalidSelection
         }

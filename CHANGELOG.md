@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0a1
+
+- Clarify the personal-agent vision, target developers and a fictional photo-clue/user-explanation walkthrough.
+- Define a first useful-assistance trial and distinguish planned interpretation and preference learning from the implemented review/MCP foundation.
+- Keep default English documentation, privacy boundaries and current validation claims aligned.
+- Add a system Photos picker for up to five selected images, on-device Vision scene prompts and user-written explanations.
+- Require explicit wording confirmation, invalidate it on edits and keep disclosure selection separate.
+- Keep images, classifier labels, confidence and source handles out of exports; provide in-memory session clearing.
+- Add the `personal_assistance` purpose and a fictional preference/café-work correction demo on the existing consent and MCP path.
+- Add Swift reflection/metadata checks and native UI coverage; document what still needs device and real-user validation.
+
 ## 0.3.0a1
 
 - Add a versioned phone export contract with strict field, size, lifetime and attribution validation.

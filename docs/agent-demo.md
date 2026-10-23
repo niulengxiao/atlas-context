@@ -41,3 +41,14 @@ A subsequent configured Codex client check used the versioned phone-file connect
 - 2025: the user says they put together a small photography portfolio.
 
 The model stated that these selected, reviewed statements provide neither independent corroboration nor a complete account of intervening events. Citation IDs were checked against all three actual tool items. Raw client logs and local configuration paths remain private. This was a small fictional cloud-host test, not a real personal-data trial or a verified local-model deployment. See [phone setup](phone-handoff.md) and [privacy boundaries](../PRIVACY.md).
+
+## Personal assistance after a corrected photo interpretation
+
+A fifth configured Codex host example used the actual Swift contract check's fictional, confirmed explanations. The Python connector accepted the serialized records under `personal_assistance`; this known fictional fixture was explicitly enabled for cloud use on both sides. The host called `search_life_context` once and received two user statements:
+
+- The person enjoys quiet outdoor walks, photography and flexible days off.
+- Their café photographs were a work assignment, not evidence of enjoying busy cafés.
+
+Asked for two relaxed-day options and whether café-hopping was a hobby, the host explicitly rejected that unsupported hobby inference and cited the work correction. It proposed a quiet outdoor day and a lower-effort day close to home, distinguished suggestions from past events and asked whether the preference for flexibility still applied. Both returned citation IDs were used and matched the tool response. No originals or classifier labels reached the host.
+
+This checks one corrected-preference assistance path, not a controlled comparison, general model reliability, or improved real-user usefulness. The phone's local scene questions are fixed templates; the host generated these suggestions from approved text. Raw logs, runtime grants and local paths stay outside the repository.

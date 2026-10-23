@@ -1,6 +1,17 @@
 # Roadmap
 
-The first complete user journey is: select a small set of life records, review the exact context for one writing task, retrieve it with citations, then correct or revoke it. This is a working plan, with no delivery dates or adoption claims.
+The product direction is to help an agent understand a person's experiences, interests and preferences through selected everyday photo clues and that person's own explanations. The first product trial should connect one confirmed piece of context to one useful task, with sources, correction and disclosure control. This is a working plan, with no delivery dates or adoption claims. See the [fictional walkthrough and evaluation criteria](docs/product-direction.md).
+
+## First product milestone: ask before interpreting
+
+- [x] Extract bounded clues from up to five picker-selected photos using local Vision classification.
+- [x] Ask a template question about meaning; accept the person's explanation, correction or decision to skip.
+- [x] Keep tentative scene clues local; export only confirmed user statements, with confirmation invalidated by edits.
+- [x] Separately review exact context for `personal_assistance`, with nothing selected and cloud off by default.
+- [ ] Compare one ordinary assistance task with and without approved personal context.
+- [ ] Record user corrections and source errors; verify that changed preferences do not silently reuse old authorization.
+
+The alpha now adds selected-photo scene prompts and user explanations to the review/export/MCP foundation. A fictional café-work correction exercises the distinction between a photo and a preference. Generative photo interpretation, autonomous clarification dialogue, preference learning and a long-term profile remain future work. A complete personality inferred from photos is outside the scope of this milestone.
 
 ## Available: local policy and adapter prototype
 
@@ -51,4 +62,4 @@ Any real-data cloud trial requires a separate explicit decision about the exact 
 
 ## Later, if these milestones justify it
 
-Additional adapters, larger-library retrieval, local-model evaluation, encryption at rest and multiple clients. Full life understanding, personality judgments, relationship inference and autonomous life decisions are outside the initial project scope.
+Additional adapters, larger-library retrieval, local-model evaluation, encryption at rest, changing life context and multiple clients. Inferring a complete personality, relationships or life history solely from photos, and autonomous life decisions, remain outside the project scope. The intended personal context is selected, explained and corrected by its owner.
