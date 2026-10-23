@@ -21,6 +21,7 @@ def run(project, results, derived):
         subprocess.run(["xcodebuild", "-quiet", "-project", str(Path(project).resolve()), "-scheme", "AtlasPhoneDemo",
                         "-destination", "platform=iOS Simulator,id=" + device, "-derivedDataPath", str(Path(derived).resolve()),
                         "-resultBundlePath", str(Path(results).resolve()), "-parallel-testing-enabled", "NO",
+                        "-collect-test-diagnostics", "never",
                         "-test-timeouts-enabled", "YES", "-maximum-test-execution-time-allowance", "120",
                         "CODE_SIGNING_ALLOWED=NO", "test"], check=True, timeout=1200)
     finally:

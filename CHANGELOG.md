@@ -6,7 +6,9 @@
 - Add bounded whole-word/Han-bigram retrieval, stable relevance ordering, capped overviews and explicit `has_more`. Keep exact wording, private-field exclusion and per-call authorization checks.
 - Expose strict result/character budgets in MCP and local preview; retain local citation resolution beyond the capped overview.
 - Prepare 15 fixed fictional evaluation tasks with common prompts, original/corrected conditions, human rubrics and revoked controls. Preparation performs no model calls.
+- Publish all outputs from nine actual controlled host smoke conditions, including Chinese preferences and quoted adversarial evidence, with citation-ID checks and explicit evaluation limits.
 - Add native UI interactions to relevant-source/tag/manual CI runs while retaining lightweight checks for documentation changes.
+- Give reflection buttons stable per-record accessibility targets; keep test taps clear of navigation/sheet edges and scroll outside text editors. All four interaction cases pass together locally.
 - Clarify the separate App Store product, standalone companion and pending production integration.
 
 ## 0.4.0a2

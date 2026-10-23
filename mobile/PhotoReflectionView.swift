@@ -64,7 +64,7 @@ struct PhotoReflectionView: View {
                         try? reflection.confirm()
                     }
                     .disabled(!reflection.canConfirm || reflection.isConfirmed)
-                    .accessibilityIdentifier("confirm-reflection")
+                    .accessibilityIdentifier("confirm-reflection-\(reflections.firstIndex(where: { $0.id == reflection.id }) ?? 0)")
                     if reflection.isConfirmed {
                         Text("Confirmed as your statement, not an independently verified fact. Editing clears confirmation.")
                             .font(.caption).foregroundStyle(.secondary)

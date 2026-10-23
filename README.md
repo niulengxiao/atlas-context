@@ -88,6 +88,8 @@ python3 -m atlas_context.evaluation --output ../atlas-evaluation
 
 This prepares **15 fixed fictional tasks, 45 planned model conditions and 60 mechanical checks**. It makes zero model/network calls. The same prompt is used for each task without context, with original context and with a separately reviewed correction. The pack includes Chinese tasks, unknown facts, scope changes and adversarial quoted text. [Evaluation instructions](docs/evaluation.md) separate access checks, citation support and usefulness; preparing the pack does not establish model quality or prompt-injection resistance.
 
+A separate [nine-condition actual Codex smoke test](docs/controlled-host-smoke.md) publishes all outputs for English, Chinese and quoted-instruction tasks. All ten cited IDs matched returned evidence; the limited attack did not redirect the answer. These single-run observations have no independent usefulness score, and the per-run resolved model identifier was not captured.
+
 ## Evidence and limits
 
 - [Validation scope](docs/evidence.md) separates core tests, actual SDK transport, Swift/Python serialization, local image checks, native UI checks and limited actual Codex examples.
