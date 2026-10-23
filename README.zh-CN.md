@@ -2,7 +2,7 @@
 
 **让你的 Agent 带着你的人生背景，理解并帮助你。**
 
-[English](README.md) · [产品方向](docs/product-direction.md) · [手机接入](docs/phone-handoff.md) · [隐私说明](PRIVACY.md) · [路线图](ROADMAP.md) · [MIT 许可](LICENSE)
+[English](README.md) · [五分钟审阅](docs/reviewer-guide.md) · [产品方向](docs/product-direction.md) · [手机接入](docs/phone-handoff.md) · [隐私说明](PRIVACY.md) · [路线图](ROADMAP.md) · [MIT 许可](LICENSE)
 
 Atlas Context 希望从你选定的日常照片和你自己的讲述中，逐渐整理出经历、兴趣与偏好，让 Agent 在提供帮助时拥有连续的背景。你应当能查看它如何理解你、纠正错误，并决定哪些内容可以交给哪个 Agent 使用。
 
@@ -13,6 +13,16 @@ Atlas Context 希望从你选定的日常照片和你自己的讲述中，逐渐
 > **隐私优先：** 默认不选记录、不开云端权限；不导出原图、视频、GPS、相册标识或完整备份。文字仍可能包含隐私，需要逐句审核。使用云端模型会把批准文字发送给模型服务商；撤销仅能阻止后续读取，不能追回已发送的副本。详见 [隐私说明](PRIVACY.md)。
 
 ## 一条命令体验偏好与纠错
+
+审核者可以先运行不需要照片、账号、SDK 或 API Key 的完整生命周期演示：
+
+```sh
+python3 -m atlas_context.review_demo --output ../atlas-review-demo
+```
+
+预期九项检查通过，模型与网络调用均为零。打开生成的 `private-review-walkthrough.md`，查看本人陈述、错误推测未被导出、修改草稿后失效、撤销旧访问、重新审核新偏好的过程。新偏好是本次休息日想参加有固定时间的室内艺术工作坊。演示不自动刷新手机资料，也不代表长期记忆。详见 [审阅指南](docs/reviewer-guide.md)。
+
+以下命令保留最初的偏好场景：
 
 ```sh
 python3 -m atlas_context.phone demo --scenario personal-assistance --output ../atlas-assistance-demo
@@ -49,7 +59,7 @@ python3 -m venv ../atlas-env
 
 第一版体验是：选定照片线索 → 固定场景问题 → 本人解释或纠正 → 审核后形成生活背景 → Agent 带着背景提供帮助。比如，你说明周末散步是为了放慢节奏、喜欢留出自由时间；已连接的 Agent 可以依据这段获准的解释提出方案、引用理由，并确认偏好是否仍然适用。项目没有内置本地语言模型。
 
-站在你的角度思考，需要理解你认可的目标和取舍，也要能提醒盲点、提供其他选择。观察、本人陈述和模型猜测应分开记录，不能把几张照片变成固定的人格标签。现有演示覆盖反思、审核与传输；个性化帮助是否更有用，还需要独立使用反馈与对照试验。详见 [产品方向与虚构场景](docs/product-direction.md)。
+站在你的角度思考，需要理解你认可的目标和取舍，也要能提醒盲点、提供其他选择。观察、本人陈述和模型猜测应分开记录，不能把几张照片变成固定的人格标签。已有同一虚构任务在 [无背景、原偏好和新偏好下的实际客户端样例](docs/context-comparison.md)，尚未建立真实用户的效果优势。详见 [产品方向与虚构场景](docs/product-direction.md)。
 
 ## 用虚构资料运行
 

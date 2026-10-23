@@ -7,6 +7,7 @@ The phone flow uses a bounded local Vision classifier and template questions. On
 ## Safe starting point
 
 - Use fictional fixtures by default: `python3 -m atlas_context.phone demo --output ../atlas-phone-demo`.
+- Start a review with `python3 -m atlas_context.review_demo --output ../atlas-review-demo`: nine core checks and an explicit revoke/re-review workflow. It accepts no personal input. See `docs/reviewer-guide.md`.
 - For contextual help and a corrected photo inference, use `python3 -m atlas_context.phone demo --scenario personal-assistance --output ../atlas-assistance-demo`. Follow the generated task for the bound purpose.
 - The demo makes no model calls. The cited preview repeats reviewed sentences; it is not an AI analysis.
 - For a summary, connect the read-only MCP server using the generated `session/private-server.json` in trusted host configuration. Then use `session/private-agent-task.md`.

@@ -52,3 +52,5 @@ A fifth configured Codex host example used the actual Swift contract check's fic
 Asked for two relaxed-day options and whether café-hopping was a hobby, the host explicitly rejected that unsupported hobby inference and cited the work correction. It proposed a quiet outdoor day and a lower-effort day close to home, distinguished suggestions from past events and asked whether the preference for flexibility still applied. Both returned citation IDs were used and matched the tool response. No originals or classifier labels reached the host.
 
 This checks one corrected-preference assistance path, not a controlled comparison, general model reliability, or improved real-user usefulness. The phone's local scene questions are fixed templates; the host generated these suggestions from approved text. Raw logs, runtime grants and local paths stay outside the repository.
+
+A subsequent [three-condition example](context-comparison.md) uses the same fictional request without context, with the original preference and after separately reviewing a changed preference. It includes the actual outputs and citation checks, with the limits of fresh-host comparison stated explicitly.

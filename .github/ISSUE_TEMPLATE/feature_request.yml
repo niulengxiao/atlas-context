@@ -1,0 +1,20 @@
+name: Feature or integration proposal
+description: Describe a useful personal-agent workflow with an invented example.
+body:
+  - type: markdown
+    attributes:
+      value: "Use fictional scenarios only. Do not attach personal photos, life records or private exports."
+  - type: textarea
+    id: workflow
+    attributes:
+      label: What would this help someone do?
+      description: Describe the user or developer workflow and its current difficulty.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Explain what would change, including what the person would review before sharing.
+    validations:
+      required: true

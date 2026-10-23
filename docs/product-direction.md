@@ -73,7 +73,7 @@ Record corrections and failures as well as positive feedback. No user trial, pre
 | Read-only MCP, expiry checks and future-read revocation | Implemented; tested with protocol clients and limited fictional Codex examples |
 | Selected-photo clue extraction and user clarification | Implemented: local Vision, fixed scene questions, user explanations, confirmation invalidation; no generative dialogue |
 | Editable, changing interests and long-term life context | Planned |
-| Contextual-help path | Implemented task purpose and fictional corrected-preference scenario; usefulness comparison and independent feedback remain planned |
+| Contextual-help path | Implemented task purpose and fictional correction workflow; three actual host conditions are documented in [the comparison](context-comparison.md). Controlled usefulness assessment and independent feedback remain planned. |
 | Production Atlas Memoir integration and physical-device transfer | Unverified |
 
 See the [runnable phone handoff](phone-handoff.md), [validation evidence](evidence.md) and [roadmap](../ROADMAP.md). The vision describes what to build toward; the evidence page describes what has actually been checked.

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0a2
+
+- Add a five-minute reviewer guide and one-command fictional lifecycle: nine checks, explicit old-session revocation and separately reviewed changed preferences.
+- Add two regression tests and CI smoke tests of the installed package outside the source checkout.
+- Document three actual fresh Codex host conditions for the same request: no context, original reviewed preference and newly reviewed correction, with matched citations and stated evaluation limits.
+- Simplify the English README around the runnable path, reusable components and current evidence.
+- Add fictional bug-report forms and a private privacy/security reporting guide; enable GitHub private vulnerability reporting.
+- Keep source publishing, synthetic assets, phone defaults and existing privacy boundaries intact.
+
 ## 0.4.0a1
 
 - Clarify the personal-agent vision, target developers and a fictional photo-clue/user-explanation walkthrough.

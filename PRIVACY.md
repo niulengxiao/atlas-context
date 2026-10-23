@@ -43,3 +43,5 @@ Run `python3 -m atlas_context.phone revoke --runtime ../atlas-private-session` t
 The project has no claim of end-to-end encryption, zero-knowledge storage, secure hardware attestation, multi-user isolation, semantic redaction or complete prompt-injection protection. A summary covers selected evidence, not an objective account of a whole life; missing evidence is not evidence that something never happened. Avoid unsupported judgments about health, personality, relationships or identity.
 
 Report problems with synthetic reproductions. Do not post private exports or secrets in public issues. The publication guard checks known secret/path patterns, exact public file lists and reviewed media hashes; manual review is still required. See [validation scope](docs/evidence.md) and [contribution guidance](CONTRIBUTING.md).
+
+For a suspected privacy or security problem, use the private channel described in [Reporting](docs/reporting.md). Begin with fictional steps rather than sending the personal records that may have exposed the problem.

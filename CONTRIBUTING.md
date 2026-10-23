@@ -2,6 +2,8 @@
 
 Atlas Context is an experimental local prototype. Small improvements to review behavior, source attribution, synthetic examples and documentation are useful first contributions. Please discuss changes to disclosure boundaries before broadening what a query can return.
 
+Start with the [five-minute reviewer guide](docs/reviewer-guide.md). Use the [reporting guide](docs/reporting.md) to choose a public fictional bug report or the private privacy/security channel.
+
 ## Reproduce with fictional data
 
 Use Python 3.10+ and the standard library. Run from the repository root:

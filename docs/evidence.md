@@ -10,7 +10,9 @@ The [personal-agent direction](product-direction.md) now has a small implementat
 | Rich story generator | Sixteen drafts across three fictional years, eight retrieval scenarios |
 | MCP SDK roundtrip | Real subprocess stdio connection; 16 assertions including revocation on the same connection |
 | Legacy stdio check | Official SDK client negotiated 2025-11-25 and listed the one read-only tool |
-| Unit tests | 47 Python tests passed with the MCP extra: core disclosure, adapters, corrected-preference task purpose, MCP and publication/history checks |
+| Unit tests | 49 Python tests passed with the MCP extra: core disclosure, adapters, corrected-preference task purpose, reviewer lifecycle, MCP and publication/history checks |
+| Reviewer walkthrough | Nine reproducible core checks, zero model/network calls; old session revoked and new preference separately reviewed |
+| Package installation | Built wheel inspected against public Python sources; installed reviewer command runs outside the source checkout |
 | Phone handoff | Strict schema, review hash, bounded lifetime, cloud opt-in, private runtime and revocation; fictional records only |
 | Swift/Python contract | Foundation exporter compiled; actual confirmed reflection output accepted by Python under `personal_assistance`; only text/attribution exported |
 | Reflection state | Swift checks require nonblank bounded wording, invalidate confirmation on edits and keep scene questions out of exported records |
@@ -30,5 +32,7 @@ The native app source was not modified in place; only a build copy received the 
 The subsequent phone feature is standalone public Swift source, not a modification to the private Atlas Memoir app. A fourth actual Codex host check used a newly generated fictional phone bundle with explicit phone and desktop cloud opt-in. The host called the read-only tool once, retrieved three user statements, cited all three and excluded the inferred trip. This verifies one configured summary path; it does not establish universal model quality, local-model deployment or host compliance with a local-only policy. See [phone workflow](phone-handoff.md).
 
 A fifth host example used the actual Swift-serialized, fictional reflection statements under `personal_assistance`. With explicit test-only cloud opt-in on both sides, Codex retrieved two user statements, cited both, rejected a café-hopping hobby inference and proposed two flexible day-off options. It asked whether the stated preference still applied. This checks one configured corrected-preference path; there is no no-context comparison or independent usefulness score. See [the curated example](agent-demo.md#personal-assistance-after-a-corrected-photo-interpretation).
+
+Three subsequent fresh-host conditions used the same fictional day-off request without context, with original approved context and with a newly reviewed correction. The installed `0.4.0a2` package supplied two records in each connected condition; all four citation IDs matched actual tool items. The baseline claimed no specific preference evidence. The connected outputs followed the stated quiet-walk or indoor-workshop preference and retained the café-work correction. These bring the documented host examples to eight. They do not establish improved real-user usefulness or erasure of old conversation history. See [complete outputs, conditions and limits](context-comparison.md).
 
 Links: [synthetic data](demo.md), [MCP setup](mcp.md), [App provenance](app-showcase.md), [CI runs](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml).

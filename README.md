@@ -4,208 +4,95 @@
 
 [![Synthetic checks](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml/badge.svg)](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml)
 
-[Chinese translation](README.zh-CN.md) · [Product direction](docs/product-direction.md) · [Phone to Agent](docs/phone-handoff.md) · [Privacy](PRIVACY.md) · [MCP setup](docs/mcp.md) · [Roadmap](ROADMAP.md) · [MIT license](LICENSE)
+[Review in five minutes](docs/reviewer-guide.md) · [Chinese translation](README.zh-CN.md) · [Phone setup](docs/phone-handoff.md) · [Privacy](PRIVACY.md) · [Evidence](docs/evidence.md) · [MIT license](LICENSE)
 
-Atlas Context is an experimental personal context layer for AI agents. The goal is to help an agent understand your experiences, interests and preferences through selected everyday photos and your own explanations, so future assistance can start with useful background. You should be able to inspect that understanding, correct it as your life changes and choose which parts to share.
+Atlas Context is an experimental personal context layer for AI agents. Selected everyday photos provide clues; **your explanations give them meaning**. You confirm what mattered, choose the exact text to share and let an agent use that background for a specific task, with citations and control over future access.
 
-For developers building personal agents, this repository provides an iOS selected-photo reflection flow, a Python review core and read-only MCP retrieval. The phone uses Apple's local Vision classifier to suggest a small set of scene questions. You explain what a moment meant, confirm your wording and separately choose what an agent may receive. This is bounded scene classification and template-based clarification, not generative photo understanding or a long-term personality model.
+For developers, the reusable pieces are a SwiftUI photo-reflection and selective-export flow, a strict Python phone connector, exact-wording approval and one read-only MCP tool. They work independently of a particular model provider. The intended value is less repeated explanation and assistance grounded in the person's stated experiences, interests and tradeoffs.
 
-**Status: experimental alpha.** The implemented flow is **choose up to five photos → local scene question → explain or correct → confirm your words → review exact export → connect → ask your agent for relevant help with citations**. A fictional walk-through works without choosing any photos. Automatic USB scanning, production Atlas Memoir integration, live phone synchronization and durable preference learning remain future work. See the [phone guide](docs/phone-handoff.md) and [validation scope](docs/evidence.md).
+**Status: experimental alpha.** Local scene classification and fixed questions are implemented. Generative photo understanding, autonomous clarification dialogue, durable preference learning, production Atlas Memoir integration and physical-device transfer remain planned or unverified. There is no claim of broad adoption or improved real-user outcomes.
 
-> **Privacy first:** nothing is selected by default. The phone export contains reviewed text, not original photos, videos, GPS, photo IDs or a full backup. Cloud access defaults off. Using a cloud Agent sends approved text to its provider; revocation blocks future reads but cannot recall previous copies. Text can still contain identifying details. Read the [full privacy statement](PRIVACY.md).
+> **Privacy first:** no full-library scan, no exported originals, GPS or photo identifiers, and no records selected for disclosure by default. Cloud access defaults off. Approved text can still identify you. Revocation stops future reads; it cannot recall copies already received. See [PRIVACY.md](PRIVACY.md).
 
-## Try a preference and a correction
+## Try it without a phone or API key
+
+Use Python 3.10+:
 
 ```sh
-python3 -m atlas_context.phone demo --scenario personal-assistance --output ../atlas-assistance-demo
+git clone https://github.com/niulengxiao/atlas-context.git
+cd atlas-context
+python3 -m atlas_context.review_demo --output ../atlas-review-demo
 ```
 
-The fictional person enjoys quiet walks and flexible plans. Their many café photos were for work, not a café-hopping preference. This command creates a private MCP session and two cited user statements; no café-hopping preference is created or exported. It makes no model call. Bind `session/private-server.json` to your MCP host, give the agent `session/private-agent-task.md` and ask: **“Help me plan a relaxed day off. Explain how my stated preferences affect the options.”** Use a local model for the default `local_only` session. The [phone guide](docs/phone-handoff.md) explains the native photo flow and connection. Agents should read [AGENTS.md](AGENTS.md) first.
+Expected: **nine checks passed, zero model calls and zero network calls**. Open `../atlas-review-demo/private-review-walkthrough.md` locally. Everything is fictional, and the preview repeats exact reviewed statements rather than generating advice. Use a new output directory each time.
 
-To run the phone experience in Xcode, generate an isolated project:
+The example person likes quiet walks and flexible days off. Their café photos were for work, so no café-hopping preference is created. The walkthrough then explicitly revokes the old session and separately reviews a new preference for a structured indoor art workshop. The old access stays denied. This demonstrates the correction and authorization lifecycle; it does not automatically refresh a phone source or maintain long-term memory.
+
+For an actual agent, follow [MCP setup](docs/mcp.md) and bind the generated `corrected-session/private-server.json`. Use a local model for its default `local_only` policy. Ask for a day-off plan and use the generated task instructions to require cited personal claims, alternatives and a check that the preference still applies. A model and trusted host must be configured separately.
+
+The [reviewer guide](docs/reviewer-guide.md) also provides an actual SDK transport demo, expected results, code pointers and current limitations.
+
+## From a photo to context you control
+
+```text
+Up to five chosen photos → Local scene question → Your explanation/correction
+          → Confirm your words → Separately review disclosure
+          → Transfer reviewed JSON → Connect read-only MCP → Ask your agent
+```
+
+Apple's on-device Vision classifier supplies a tentative outdoors, food/café, creative or neutral question. It does not determine what an experience meant or infer a personality. Real selected images start with blank explanations. Editing your explanation clears its confirmation. Confirmed text still starts unselected in the separate export screen, where cloud use is off and the full JSON must be reviewed before saving.
+
+The app keeps images and explanations in memory. **Clear this session** removes that session; previously exported copies need separate revocation/deletion. The system picker may download an explicitly selected iCloud photo. File providers may upload the saved JSON independently of any agent. Phone connection and Agent access are explicit, not an automatic USB scan.
+
+Generate the standalone iOS 18+ companion in Xcode:
 
 ```sh
 python3 scripts/create_phone_project.py --output ../atlas-phone-app
 open ../atlas-phone-app/AtlasPhoneDemo.xcodeproj
 ```
 
-Choose **Try fictional walk-through**, or explicitly choose up to five images with the system picker. Actual selected images start with blank explanations. Confirming a statement does not share it: the separate export screen starts with no records selected and cloud use off. Editing an explanation clears its confirmation. **Clear this session** removes the app's in-memory images and explanations; previously exported copies must be revoked/deleted separately.
+Choose **Try fictional walk-through** to avoid library access, or explicitly select up to five images. A physical device needs your signing team. Full steps and the versioned export contract are in [Phone setup](docs/phone-handoff.md).
 
 <p>
-  <img src="docs/assets/atlas-photo-reflection.png" width="300" alt="Fictional photo reflection: tentative questions, the person's own explanations and a café-work correction before confirmation" />
-  <img src="docs/assets/atlas-phone-review.png" width="300" alt="iOS phone context review: privacy notice, no records selected and optional metadata off, using fictional records" />
+  <img src="docs/assets/atlas-photo-reflection.png" width="300" alt="Fictional explanations: tentative scene questions, quiet walks and a café-work correction before confirmation" />
+  <img src="docs/assets/atlas-phone-review.png" width="300" alt="Earlier fictional text export screen with no records selected and optional metadata off" />
 </p>
 
-Left: the current fictional explanation flow. Right: the earlier text export component, also using fictional records. The companion uses the system picker rather than requesting full-library access; Apple's picker may download a selected iCloud photo. It is not an installed Atlas Memoir production release.
+These are actual isolated app views with fictional records. The second screenshot shows the earlier text-export component. [Asset provenance and original Atlas Memoir app views](docs/app-showcase.md) distinguish the standalone companion from the production app.
 
-## See the product background
+## What another project can reuse
 
-Atlas Memoir is the native timeline and correction product behind this exploration. These are actual app views rendered in an isolated build with entirely fictional records. The pictured sharing screen is a separate feature from Agent approval. The new [phone review/export component](docs/phone-handoff.md) is provided separately for integration; these older screenshots do not show it.
-
-<p>
-  <img src="docs/assets/atlas-timeline.png" width="240" alt="Synthetic Atlas Memoir timeline" />
-  <img src="docs/assets/atlas-editor.png" width="240" alt="Fictional life stages with user and suggested attribution" />
-  <img src="docs/assets/atlas-privacy.png" width="240" alt="Native sharing review using synthetic records" />
-</p>
-
-[18-second screenshot walkthrough](docs/assets/atlas-app-walkthrough.mp4) · [App showcase and provenance](docs/app-showcase.md)
-
-## Why this project
-
-A photo can provide a clue about a moment. Your explanation gives it personal meaning. A set of cafe photos might reflect a favorite pastime or work on a menu design project; the agent should ask before treating either interpretation as a preference.
-
-The first implemented experience is **selected photo clues → a template question → your explanation or correction → reviewed life context → task-scoped agent help**. For example, a person can explain that weekend walks are a way to slow down and that they prefer leaving part of the day unplanned. A connected agent receives that approved context to inform its options, cite its basis and check whether the preference still applies. The project does not bundle a local language model.
-
-Understanding someone's perspective should help an agent consider their stated goals and tradeoffs while still surfacing alternatives and blind spots. It should not turn a few images into a fixed personality label. Observations, user statements and model hypotheses stay distinct; permission to disclose a sentence does not prove it true.
-
-The demos exercise the reflection, review and transport path. Whether this improves everyday help still needs independent user feedback and comparison against assistance without personal context. See the [fictional walkthrough, success criteria and implementation boundaries](docs/product-direction.md).
-
-## Try it with fictional records
-
-The core needs **Python 3.10+** and the standard library only. The optional MCP integration needs **Python 3.11+**. No API key is needed for either synthetic demo. Run from the repository root:
-
-```sh
-python3 -m atlas_context.synthetic --output ../atlas-story-demo
-python3 -m atlas_context.cli preview \
-  --draft ../atlas-story-demo/private-draft.json \
-  --grant ../atlas-story-demo/private-grant.json \
-  --purpose write_short_bio --audience synthetic_agent --query photography
-```
-
-This generates a fictional three-year story: **16 drafts, 14 explicitly selected records, 13 default outgoing records and 8 query scenarios**. Photography returns seven records. Unselected entries, hidden entries, raw OCR and an unsupported employer query return no evidence; an inferred trip stays labeled as inference. The approval is scripted only because the input and reviewed wording are known fictional fixtures. Real imports still require an explicit local review.
-
-To verify the actual MCP stdio connection, create an environment outside the checkout using Python 3.11+, then run:
-
-```sh
-python3 -m venv ../atlas-env
-../atlas-env/bin/python -m pip install '.[mcp]'
-../atlas-env/bin/python -m atlas_context.mcp_demo --output ../atlas-mcp-demo
-```
-
-The MCP demo checks **16 conditions**, including a narrow tool schema, approved-only retrieval, strict argument types, source revision changes, expiry, purpose/audience mismatch and revocation on the same live connection. It intentionally leaves its demo grant revoked. Generated files remain outside this repository. See [demo details](docs/demo.md) and [host configuration](docs/mcp.md).
-
-Three actual Codex client examples are documented separately: [a cited introduction, insufficient employer evidence and a revoked grant](docs/agent-demo.md). They use fictional inputs and were manually inspected; they are not a general model-quality benchmark.
-
-The original four-record minimal example also remains available:
-
-```sh
-python3 demo.py --output ../atlas-synthetic-runtime
-python3 -m atlas_context.cli preview \
-  --draft ../atlas-synthetic-runtime/private-draft.json \
-  --grant ../atlas-synthetic-runtime/private-grant.json \
-  --purpose write_short_bio \
-  --audience synthetic_agent \
-  --query photography
-```
-
-Choose an empty output directory. The demo never replaces existing files. Its sample grant expires after one hour; use a new empty directory to generate another demo.
-
-The demo creates four private draft records and approves three. Default retrieval returns two approved records, excluding the inferred trip. It checks four scenarios:
-
-| Query | Expected result |
+| Piece | Implemented behavior |
 |---|---|
-| Photography experience (`photography`) | Two reviewed records |
-| Unapproved OCR detail | No authorized evidence |
-| Inferred trip, default search | No authorized evidence |
-| Inferred trip, explicitly included | One record, still labeled `inferred` |
+| Photo reflection | System picker, bounded local scene questions, user explanation and confirmation invalidated by edits |
+| SwiftUI export | Exact text selection, optional coarse metadata, task/disclosure mode and complete JSON review |
+| Python connector | Strict minimal schema, exact-file review hash, bounded lifetime and private runtime outside Git |
+| Approval/retrieval core | Approved projections only, source attribution, draft revision checks, purpose, audience, expiry and revocation |
+| MCP integration | One stdio tool, `search_life_context`; the model cannot choose files, widen a grant or read originals |
 
-It also checks revocation, local citation resolution and that importing the generated media catalog leaves it unchanged. Output files are written outside the source directory. Even draft, grant and preview files without media are private runtime data.
+The Python core uses the standard library on Python 3.10+. Optional MCP support uses Python 3.11+ and pinned SDK 2.3.0. Developers can embed the phone views or consume the reviewed file format and MCP tool independently. See [integration configuration](docs/mcp.md) and [contribution guidance](CONTRIBUTING.md).
 
-One returned item looks like this; its opaque citation changes between demo runs:
+## Evidence and limits
 
-```json
-{
-  "citation": "E-4969f55dd5150e8c",
-  "attribution": "user_statement",
-  "wording": "user_reviewed",
-  "source": "atlas_memoir",
-  "text": "In 2025, I started learning photography.",
-  "evidence_label": "User-written stage summary (synthetic)",
-  "period": "2025"
-}
-```
+- [Validation scope](docs/evidence.md) separates core tests, actual SDK transport, Swift/Python serialization, local image checks, native UI checks and limited actual Codex examples.
+- [Agent examples](docs/agent-demo.md) show cited summaries and contextual help with fictional inputs. They are examples, not a general model-quality benchmark.
+- [One request, three context conditions](docs/context-comparison.md) shows actual host outputs without context, with approved context and after a separately reviewed correction.
+- [Additional synthetic demos](docs/demo.md) cover richer life histories, unsupported details and explicitly labeled inference.
+- [Product direction](docs/product-direction.md) and [roadmap](ROADMAP.md) explain the intended personal-agent experience and what remains to build.
 
-The full response includes a coverage note: missing records do not establish that an event never happened. This output is a context preview, not an answer generated by an agent.
+Purpose and audience are local policy labels, not authenticated client identities. A trusted host can copy files, and the server cannot attest to its network behavior. Cloud use requires explicit phone and desktop opt-in and sends the approved text to the model provider. Encryption at rest and multi-user isolation are not implemented.
 
-## How the pieces fit
+Citations identify reviewed evidence; they do not independently verify a statement. In the photo-reflection flow they refer to the exported user wording, not original pixels. Missing records do not show that an event never happened. Retrieved text is untrusted evidence, not instructions; universal prompt-injection resistance is not established.
 
-```text
-Atlas summary projection ──┐
-                          ├─> Private drafts ─> Local wording review
-Selected media rows ──────┘                           │
-                                                     v
-                                         Purpose + audience + expiry
-                                                     │
-                                                     v
-                                         Search approved text only
-                                                     │
-                                                     v
-                                         Context preview + citations
-```
-
-- **Local Media Library** organizes media and notes. This prototype reads explicitly selected catalog rows in read-only mode.
-- **Phone reflection** provides local scene questions, your explanations and confirmation before separate disclosure. Its citations identify reviewed statements, with no retained handle to the original photos.
-- **Atlas Memoir** is the intended timeline and correction interface. Its summary adapter accepts a supplied projection. A reusable SwiftUI selective exporter and fictional companion app now provide a versioned phone handoff; production app integration remains pending. Full backup envelopes are rejected.
-- **Atlas Context** contains the reusable review and retrieval core in this repository.
-- **Agent integration** can consume approved context using the read-only `search_life_context` MCP stdio tool. Its grant, files, purpose and audience are bound by trusted local configuration, outside model arguments.
-
-## Implemented boundaries
-
-| Rule | Current behavior |
-|---|---|
-| Selected photos | System picker, up to five images; no library enumeration; local scene prompts only |
-| Meaning and correction | Only confirmed user explanations become candidates; editing invalidates confirmation |
-| Separate disclosure | Confirmed candidates still start unselected on the export screen |
-| Explicit selection | Import creates drafts, with no implicit disclosure permission |
-| Exact wording | Local approval stores the text the user chooses to disclose; no automatic prose redaction |
-| Bounded access | Each query checks local purpose, audience, expiry and active status |
-| Approved-only search | Searches approved text, year/month and city; private titles, raw OCR and source locations are not searched |
-| Source attribution | Keeps `recorded`, `user_statement` and `inferred` distinct; inference is excluded by default |
-| Changed records | A changed draft revision excludes that record until it is reviewed again |
-| Source inspection | Opaque citations resolve through a separate trusted local function; original handles are absent from the outgoing structure |
-
-Optional outgoing fields are a year or month, a city and a reviewed evidence label. Exact source locations and original media are not returned by the query function. **Review the text itself:** a sentence can still disclose personal information, regardless of which field contains it.
-
-## Current limits
-
-- Audience and purpose are **local policy labels**, not authenticated identities. Grant files are trusted local configuration, not signed credentials. A process with permission to edit them can change them.
-- Revision checks compare the supplied draft with its approved revision. This prototype does not watch the original app or media library for changes; a future integration must refresh drafts when sources change.
-- Atlas full-backup decoding, migrations, production app integration and live source refresh are outside this prototype. The separate phone export is a minimal reviewed projection. Media adapters and phone handoff checks use fictional records, not personal libraries.
-- Citations support inspection; they do not prove that reviewed wording is supported by the source. Retrieved text is marked as untrusted evidence, which does not by itself establish prompt-injection resistance in a future model.
-- Sending context to a cloud model sends that text off the device. Revocation blocks future reads from this layer; it cannot recall copies already received by a client or model.
-- Encryption at rest, multi-user isolation, large-library performance and actual agent answer quality have not been validated.
-
-See [MCP setup and boundaries](docs/mcp.md), the [evidence checklist](docs/evidence.md) and the [roadmap](ROADMAP.md) for the next milestones.
-
-## Development
+## Development and reporting
 
 ```sh
 python3 -m unittest discover -s tests -v
 python3 scripts/check_release.py
-python3 -m atlas_context.cli --help
 ```
 
-The suite covers approval rules, private-field exclusion, revision changes, expiry, revocation, read-only adapters, the real MCP subprocess transport and publication history. MCP-specific tests skip when the optional extra is absent. [GitHub Actions](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml) runs core checks on Python 3.10/3.12 and MCP checks on Python 3.11/3.12. The release guard checks the public file allowlist, reviewed-media hashes, common credential/path patterns and Git history. It supports manual review; it cannot recognize every form of private content.
+MCP-dependent tests skip when the optional SDK is absent. [CI](https://github.com/niulengxiao/atlas-context/actions/workflows/ci.yml) checks core Python versions, actual MCP transport, installed-package operation, Swift contracts, local image metadata and iOS compilation. Native UI tests have a separately documented local scope.
 
-```text
-atlas_context/
-  core.py             # Records, local approval, retrieval, local evidence lookup
-  importers.py        # Summary projection and selected media catalog adapters
-  cli.py              # Local import, approval and context preview commands
-  synthetic.py        # Fictional three-year fixture generator
-  mcp_server.py       # One read-only stdio tool, with host-bound configuration
-  mcp_demo.py         # Real SDK client/server roundtrip and invalidation checks
-  phone.py            # Strict reviewed phone handoff, local session and revocation
-mobile/               # Local photo clues, user reflection and selective SwiftUI export
-demo.py               # Generates fictional records and checks four scenarios
-tests/test_context.py # Synthetic behavior tests
-scripts/check_release.py
-PUBLIC_FILES          # Explicit source-release allowlist
-PUBLIC_MEDIA          # Exact hashes of manually reviewed synthetic showcase assets
-```
+The repository contains code, fictional fixture generators and manually reviewed synthetic showcase assets. `PUBLIC_FILES` and `PUBLIC_MEDIA` define the exact publication allowlists. Keep real photos, life records, exports, grants, logs, credentials and personal screenshots outside every Git checkout. The guard supports manual review; it cannot recognize every private fact in prose.
 
-## Public code, private records
-
-This repository contains code, documentation, synthetic fixture generators and six explicitly reviewed synthetic showcase assets. Keep real photos, videos, catalogs, OCR, notes, drafts, grants, phone exports, context exports, access logs, credentials and real-data screenshots outside every Git checkout. All other media files are rejected. `.gitignore` is a convenience, not a privacy boundary; ignored files can still be force-added or included in an archive.
-
-Contributions should reproduce issues with synthetic records. See [CONTRIBUTING.md](CONTRIBUTING.md). Code is released under the [MIT license](LICENSE); personal runtime records are not part of the source release.
+Use [fictional bug reports or the private privacy/security channel](docs/reporting.md). Code is [MIT licensed](LICENSE); personal records are not part of the source release.

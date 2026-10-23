@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a privacy or security problem privately
+    url: https://github.com/niulengxiao/atlas-context/security
+    about: Choose Report a vulnerability and start with fictional steps.
+  - name: Integration and contribution guide
+    url: https://github.com/niulengxiao/atlas-context/blob/main/CONTRIBUTING.md
+    about: Supported checks, project boundaries and contribution scope.

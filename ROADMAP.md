@@ -8,7 +8,8 @@ The product direction is to help an agent understand a person's experiences, int
 - [x] Ask a template question about meaning; accept the person's explanation, correction or decision to skip.
 - [x] Keep tentative scene clues local; export only confirmed user statements, with confirmation invalidated by edits.
 - [x] Separately review exact context for `personal_assistance`, with nothing selected and cloud off by default.
-- [ ] Compare one ordinary assistance task with and without approved personal context.
+- [x] Compare one fixed fictional day-off request across no context, approved context and a separately reviewed correction; document actual host outputs and limits.
+- [ ] Collect independent usefulness feedback and a controlled comparison on authorized private tasks.
 - [ ] Record user corrections and source errors; verify that changed preferences do not silently reuse old authorization.
 
 The alpha now adds selected-photo scene prompts and user explanations to the review/export/MCP foundation. A fictional café-work correction exercises the distinction between a photo and a preference. Generative photo interpretation, autonomous clarification dialogue, preference learning and a long-term profile remain future work. A complete personality inferred from photos is outside the scope of this milestone.
